@@ -4,17 +4,21 @@
 
 ---
 
-## Current Status: Phase 3 (Responsive Design)
+## Current Status: Phase 4 (Browser APIs — Geolocation + Local Storage + Drag & Drop)
 
-Phase 3 implements comprehensive mobile-to-desktop responsive design, including viewport meta tag scaling, container `width`/`max-width` bounding, responsive images and avatars, fluid `vw`-based typography scaling (`clamp()`), CSS media queries, collapsible navigation drawer, mobile search overlay, and contained table scrolling with zero horizontal page overflow.
+Phase 4 implements browser API capabilities within the academic portal:
+1. **Geolocation API:** Student dashboard Campus & Browser Location widget with permission/error state handling.
+2. **Local Storage:** Client-side preference management (`campushub:lastVisitedPage`, `campushub:compactDashboard`, `campushub:taskFilter`, `campushub:taskOrder`).
+3. **Native HTML5 Drag & Drop:** Custom task card reordering on the Tasks page with Local Storage order persistence and keyboard accessibility.
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3, Lucide React, shadcn/ui design patterns
+- **Browser APIs:** Geolocation (`navigator.geolocation`), Local Storage (`localStorage`), Native HTML5 Drag and Drop (`draggable`, `dragstart`, `dragover`, `drop`, `dragend`)
 - **Backend:** Node.js (v24.x), Express.js 4, CORS
-- **Storage Layer (Phases 1-3):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
+- **Storage Layer (Phases 1-4):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
 ---
@@ -28,12 +32,12 @@ CampusHub/
 │   │   ├── components/
 │   │   │   ├── ui/               # Card, Button, Badge, Avatar, Separator, Input, Dialog
 │   │   │   ├── layout/           # Header (Mobile Search), Sidebar (Drawer), PortalLayout
-│   │   │   └── dashboard/        # StatCards, Schedule, Assignments, Notices, Activity
+│   │   │   └── dashboard/        # StatCards, Schedule, Assignments, Notices, Activity, LocationWidget
 │   │   ├── pages/                # TasksPage, DashboardPage, CoursesPage, AttendancePage, ProfilePage, etc.
 │   │   ├── services/             # taskService.js (REST API Client)
 │   │   ├── data/                 # Mock academic dataset (Aarav Mehta, CS2026001)
-│   │   ├── lib/                  # Utility functions
-│   │   ├── App.jsx               # Application root
+│   │   ├── lib/                  # storage.js (Local Storage Helper), utils.js
+│   │   ├── App.jsx               # Application root with lastVisitedPage restoration
 │   │   ├── main.jsx              # DOM entry
 │   │   └── index.css             # Academic color variables, fluid vw typography & media queries
 │   ├── components.json
@@ -58,7 +62,8 @@ CampusHub/
 ├── docs/
 │   ├── practical-1.md            # Practical 1 documentation & verification
 │   ├── practical-2.md            # Practical 2 documentation & verification
-│   └── practical-3.md            # Practical 3 documentation & verification
+│   ├── practical-3.md            # Practical 3 documentation & verification
+│   └── practical-4.md            # Practical 4 documentation & verification
 │
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
@@ -138,6 +143,9 @@ npm run dev:frontend
 | **Practical 3 (II)** | `frontend/src/` | Width, max-width, and responsive media scaling | Completed |
 | **Practical 3 (III)**| `frontend/src/index.css` | Responsive fluid typography using `vw` & `clamp()` | Completed |
 | **Practical 3 (IV)** | `frontend/src/` | Responsive layout, media queries, and drawer navigation | Completed |
+| **Practical 4 (I)** | `frontend/src/components/dashboard/LocationWidget.jsx` | Geolocation API (`navigator.geolocation`) verification | Completed |
+| **Practical 4 (II)**| `frontend/src/lib/storage.js` | Browser Local Storage preference management | Completed |
+| **Practical 4 (III)**| `frontend/src/pages/TasksPage.jsx` | Native HTML5 Drag & Drop task card reordering | Completed |
 
 ---
 
@@ -145,4 +153,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 3 scoped.
+- Strictly Phase 4 scoped.

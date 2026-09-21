@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PortalLayout } from "@/components/layout/PortalLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { CoursesPage } from "@/pages/CoursesPage";
@@ -9,14 +9,36 @@ import { NoticesPage } from "@/pages/NoticesPage";
 import { TasksPage } from "@/pages/TasksPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { mockStudent } from "@/data/mockData";
+import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
+
+const VALID_TABS = [
+  "dashboard",
+  "courses",
+  "attendance",
+  "assignments",
+  "results",
+  "notices",
+  "tasks",
+  "profile"
+];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  // Practical 4: Initialize active navigation tab from Local Storage preference
+  const [activeTab, setActiveTab] = useState(() => {
+    const saved = getStorageItem(STORAGE_KEYS.LAST_VISITED_PAGE, "dashboard");
+    return VALID_TABS.includes(saved) ? saved : "dashboard";
+  });
+
+  // Practical 4: Persist tab selection in Local Storage
+  const handleSelectTab = (tabId) => {
+    setActiveTab(tabId);
+    setStorageItem(STORAGE_KEYS.LAST_VISITED_PAGE, tabId);
+  };
 
   const renderActivePage = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardPage onNavigate={setActiveTab} />;
+        return <DashboardPage onNavigate={handleSelectTab} />;
       case "courses":
         return <CoursesPage />;
       case "attendance":
@@ -32,7 +54,7 @@ export default function App() {
       case "profile":
         return <ProfilePage />;
       default:
-        return <DashboardPage onNavigate={setActiveTab} />;
+        return <DashboardPage onNavigate={handleSelectTab} />;
     }
   };
 
@@ -40,7 +62,7 @@ export default function App() {
     <PortalLayout
       student={mockStudent}
       activeTab={activeTab}
-      onSelectTab={setActiveTab}
+      onSelectTab={handleSelectTab}
     >
       {renderActivePage()}
     </PortalLayout>

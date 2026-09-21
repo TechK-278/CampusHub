@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   getTasks, 
   createTask, 
@@ -29,8 +29,18 @@ import {
   Loader2,
   RefreshCw,
   Layers,
-  Inbox
+  Inbox,
+  GripVertical,
+  ChevronUp,
+  ChevronDown,
+  RotateCcw
 } from "lucide-react";
+import { 
+  getStorageItem, 
+  setStorageItem, 
+  removeStorageItem, 
+  STORAGE_KEYS 
+} from "@/lib/storage";
 
 const COURSE_OPTIONS = [
   "Full Stack Web Development",
@@ -45,8 +55,17 @@ export function TasksPage() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("all"); // "all" | "pending" | "completed"
+  
+  // Practical 4: Task filter persisted in Local Storage
+  const [filter, setFilter] = useState(() => 
+    getStorageItem(STORAGE_KEYS.TASK_FILTER, "all")
+  );
   const [feedback, setFeedback] = useState(null);
+
+  // Practical 4: Native Drag and Drop State
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [hasCustomOrder, setHasCustomOrder] = useState(false);
 
   // Add Task Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -63,7 +82,7 @@ export function TasksPage() {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
-  // Load tasks on mount
+  // Load tasks on mount and apply Local Storage ordering
   useEffect(() => {
     fetchTasksList();
   }, []);
@@ -76,12 +95,39 @@ export function TasksPage() {
     }
   }, [feedback]);
 
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setStorageItem(STORAGE_KEYS.TASK_FILTER, newFilter);
+  };
+
+  /**
+   * Applies saved Local Storage task ordering to fetched tasks
+   */
+  const applySavedOrder = (taskList) => {
+    const savedOrder = getStorageItem(STORAGE_KEYS.TASK_ORDER, null);
+    if (Array.isArray(savedOrder) && savedOrder.length > 0) {
+      setHasCustomOrder(true);
+      const ordered = [...taskList].sort((a, b) => {
+        const indexA = savedOrder.indexOf(a.id);
+        const indexB = savedOrder.indexOf(b.id);
+        if (indexA === -1 && indexB === -1) return 0;
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
+      return ordered;
+    }
+    setHasCustomOrder(false);
+    return taskList;
+  };
+
   const fetchTasksList = async () => {
     setLoading(true);
     setError(null);
     try {
       const data = await getTasks();
-      setTasks(data);
+      const ordered = applySavedOrder(data);
+      setTasks(ordered);
     } catch (err) {
       console.error("Failed to load tasks:", err);
       setError("Unable to load tasks from server. Please verify backend is running.");
@@ -90,6 +136,97 @@ export function TasksPage() {
     }
   };
 
+  /**
+   * Saves current in-memory task order to Local Storage
+   */
+  const persistOrder = (updatedTasks) => {
+    const orderIds = updatedTasks.map(t => t.id);
+    setStorageItem(STORAGE_KEYS.TASK_ORDER, orderIds);
+    setHasCustomOrder(true);
+  };
+
+  const handleResetOrder = () => {
+    removeStorageItem(STORAGE_KEYS.TASK_ORDER);
+    setHasCustomOrder(false);
+    fetchTasksList();
+    setFeedback({
+      type: "success",
+      message: "Task ordering reset to default server order."
+    });
+  };
+
+  // ============================================================
+  // Practical 4: Native HTML5 Drag & Drop Event Handlers
+  // ============================================================
+  const handleDragStart = (e, index) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index);
+    // Slight opacity on dragged element
+    e.currentTarget.classList.add("opacity-50");
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (dragOverIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDrop = (e, targetIndex) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === targetIndex) {
+      setDraggedIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+
+    // Reorder task list
+    const updated = [...tasks];
+    const [movedItem] = updated.splice(draggedIndex, 1);
+    updated.splice(targetIndex, 0, movedItem);
+
+    setTasks(updated);
+    persistOrder(updated);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+
+    setFeedback({
+      type: "success",
+      message: `Reordered task "${movedItem.title}" (saved to Local Storage).`
+    });
+  };
+
+  const handleDragEnd = (e) => {
+    e.currentTarget.classList.remove("opacity-50");
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  // ============================================================
+  // Practical 4: Accessible Keyboard Reordering Alternative
+  // ============================================================
+  const handleMoveTask = (index, direction) => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= tasks.length) return;
+
+    const updated = [...tasks];
+    const [movedItem] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, movedItem);
+
+    setTasks(updated);
+    persistOrder(updated);
+
+    setFeedback({
+      type: "success",
+      message: `Moved task "${movedItem.title}" ${direction} (saved to Local Storage).`
+    });
+  };
+
+  // ============================================================
+  // Task CRUD Handlers
+  // ============================================================
   const handleToggleComplete = async (task) => {
     const newStatus = !task.completed;
     try {
@@ -154,7 +291,9 @@ export function TasksPage() {
     setSubmitting(true);
     try {
       const created = await createTask(formData);
-      setTasks(prev => [created, ...prev]);
+      const updated = [created, ...tasks];
+      setTasks(updated);
+      persistOrder(updated);
       setIsAddModalOpen(false);
       setFeedback({
         type: "success",
@@ -173,7 +312,9 @@ export function TasksPage() {
     setDeleting(true);
     try {
       await deleteTask(taskToDelete.id);
-      setTasks(tasks.filter(t => t.id !== taskToDelete.id));
+      const updated = tasks.filter(t => t.id !== taskToDelete.id);
+      setTasks(updated);
+      persistOrder(updated);
       setFeedback({
         type: "success",
         message: `Task "${taskToDelete.title}" deleted.`
@@ -203,19 +344,35 @@ export function TasksPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Page Header (Practical 3: Responsive fluid heading & wrapping controls) */}
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 pb-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-fluid-title text-slate-900">My Tasks</h1>
             <Badge variant="secondary" className="text-xs">JSON Storage</Badge>
+            <Badge variant="outline" className="text-[10px] text-blue-700 bg-blue-50 border-blue-200">
+              Drag & Drop Enabled
+            </Badge>
           </div>
           <p className="text-fluid-subtitle text-slate-500 mt-0.5">
-            Manage your academic tasks, assignments, and practical deadlines
+            Manage your academic tasks, assignments, and practical deadlines. Drag cards or use arrows to reorder.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+          {hasCustomOrder && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleResetOrder}
+              className="text-xs gap-1 h-8 sm:h-9 text-slate-500 hover:text-slate-800"
+              title="Reset task order to server default"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span className="hidden sm:inline">Reset Order</span>
+            </Button>
+          )}
+
           <Button 
             variant="outline" 
             size="sm" 
@@ -226,6 +383,7 @@ export function TasksPage() {
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
             <span className="hidden min-[380px]:inline">Refresh</span>
           </Button>
+
           <Button 
             size="sm" 
             onClick={handleOpenAddModal} 
@@ -262,7 +420,7 @@ export function TasksPage() {
         </div>
       )}
 
-      {/* Task Summary Metrics (1 col mobile, 3 cols tablet/desktop) */}
+      {/* Task Summary Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <Card className="p-4 border-slate-200 w-full">
           <div className="flex items-center justify-between">
@@ -297,7 +455,7 @@ export function TasksPage() {
       {/* Filter Tabs */}
       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-slate-200 pb-2">
         <button
-          onClick={() => setFilter("all")}
+          onClick={() => handleFilterChange("all")}
           className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${
             filter === "all"
               ? "bg-blue-50 text-blue-700 font-semibold border border-blue-200"
@@ -307,7 +465,7 @@ export function TasksPage() {
           All ({totalCount})
         </button>
         <button
-          onClick={() => setFilter("pending")}
+          onClick={() => handleFilterChange("pending")}
           className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${
             filter === "pending"
               ? "bg-amber-50 text-amber-800 font-semibold border border-amber-200"
@@ -317,7 +475,7 @@ export function TasksPage() {
           Pending ({pendingCount})
         </button>
         <button
-          onClick={() => setFilter("completed")}
+          onClick={() => handleFilterChange("completed")}
           className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${
             filter === "completed"
               ? "bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200"
@@ -366,91 +524,143 @@ export function TasksPage() {
           )}
         </Card>
       ) : (
-        <div className="space-y-3">
-          {filteredTasks.map((task) => (
-            <Card 
-              key={task.id} 
-              className={`transition-all hover:border-slate-300 w-full ${
-                task.completed ? "bg-slate-50/70 border-slate-200" : "bg-white"
-              }`}
-            >
-              <CardContent className="p-3.5 sm:p-5">
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                  {/* Left: Checkbox & Task details */}
-                  <div className="flex items-start gap-2.5 sm:gap-3 flex-1 min-w-0">
-                    <button
-                      type="button"
-                      onClick={() => handleToggleComplete(task)}
-                      className="mt-0.5 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none shrink-0"
-                      aria-label={task.completed ? "Mark pending" : "Mark completed"}
-                    >
-                      {task.completed ? (
-                        <CheckSquare className="h-5 w-5 text-emerald-600" />
-                      ) : (
-                        <Square className="h-5 w-5 text-slate-400 hover:text-slate-600" />
-                      )}
-                    </button>
+        <div className="space-y-2.5">
+          {filteredTasks.map((task, index) => {
+            const isTargeted = dragOverIndex === index;
+            return (
+              <div
+                key={task.id}
+                draggable={filter === "all"} // Drag-and-drop reordering is active in All view
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDrop={(e) => handleDrop(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`transition-all rounded-lg ${
+                  isTargeted ? "border-t-2 border-blue-600 pt-1" : ""
+                }`}
+              >
+                <Card 
+                  className={`transition-all hover:border-slate-300 w-full ${
+                    task.completed ? "bg-slate-50/70 border-slate-200" : "bg-white"
+                  }`}
+                >
+                  <CardContent className="p-3.5 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      {/* Left: Drag Handle, Checkbox & Task details */}
+                      <div className="flex items-start gap-2 sm:gap-3 flex-1 min-w-0">
+                        {/* Drag Handle Icon */}
+                        {filter === "all" && (
+                          <div
+                            className="mt-1 text-slate-300 hover:text-slate-600 cursor-grab active:cursor-grabbing shrink-0"
+                            title="Drag to reorder task"
+                            aria-label="Drag handle"
+                          >
+                            <GripVertical className="h-4 w-4" />
+                          </div>
+                        )}
 
-                    <div className="space-y-1 min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                        <span className={`text-xs sm:text-sm font-semibold leading-snug break-words ${
-                          task.completed ? "line-through text-slate-400" : "text-slate-900"
-                        }`}>
-                          {task.title}
-                        </span>
-                        <Badge variant="outline" className="text-[10px] font-mono shrink-0">
-                          #{task.id}
-                        </Badge>
+                        {/* Completion Toggle */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComplete(task)}
+                          className="mt-0.5 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none shrink-0"
+                          aria-label={task.completed ? "Mark pending" : "Mark completed"}
+                        >
+                          {task.completed ? (
+                            <CheckSquare className="h-5 w-5 text-emerald-600" />
+                          ) : (
+                            <Square className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                          )}
+                        </button>
+
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <span className={`text-xs sm:text-sm font-semibold leading-snug break-words ${
+                              task.completed ? "line-through text-slate-400" : "text-slate-900"
+                            }`}>
+                              {task.title}
+                            </span>
+                            <Badge variant="outline" className="text-[10px] font-mono shrink-0">
+                              #{task.id}
+                            </Badge>
+                          </div>
+
+                          {task.description && (
+                            <p className={`text-xs break-words ${
+                              task.completed ? "line-through text-slate-400" : "text-slate-600"
+                            }`}>
+                              {task.description}
+                            </p>
+                          )}
+
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 pt-1">
+                            <span className="flex items-center gap-1 truncate">
+                              <BookOpen className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">{task.course}</span>
+                            </span>
+                            <span className="flex items-center gap-1 shrink-0">
+                              <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                              Due: {task.dueDate}
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
-                      {task.description && (
-                        <p className={`text-xs break-words ${
-                          task.completed ? "line-through text-slate-400" : "text-slate-600"
-                        }`}>
-                          {task.description}
-                        </p>
-                      )}
+                      {/* Right: Keyboard Reorder Alternatives, Status Badge & Delete Trigger */}
+                      <div className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                        {/* Keyboard accessible Move Up / Move Down buttons */}
+                        {filter === "all" && (
+                          <div className="flex items-center border border-slate-200 rounded-md bg-slate-50 p-0.5">
+                            <button
+                              type="button"
+                              onClick={() => handleMoveTask(index, "up")}
+                              disabled={index === 0}
+                              className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 disabled:hover:text-slate-400"
+                              title="Move task up (Keyboard alternative)"
+                              aria-label={`Move task ${task.title} up`}
+                            >
+                              <ChevronUp className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleMoveTask(index, "down")}
+                              disabled={index === tasks.length - 1}
+                              className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 disabled:hover:text-slate-400"
+                              title="Move task down (Keyboard alternative)"
+                              aria-label={`Move task ${task.title} down`}
+                            >
+                              <ChevronDown className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        )}
 
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 pt-1">
-                        <span className="flex items-center gap-1 truncate">
-                          <BookOpen className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                          <span className="truncate">{task.course}</span>
-                        </span>
-                        <span className="flex items-center gap-1 shrink-0">
-                          <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                          Due: {task.dueDate}
-                        </span>
+                        <Badge 
+                          variant={task.completed ? "success" : "warning"}
+                          className="text-[10px]"
+                        >
+                          {task.completed ? "Completed" : "Pending"}
+                        </Badge>
+
+                        <button
+                          type="button"
+                          onClick={() => setTaskToDelete(task)}
+                          className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                          title="Delete task"
+                          aria-label="Delete task"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Right: Status Badge & Delete Trigger */}
-                  <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                    <Badge 
-                      variant={task.completed ? "success" : "warning"}
-                      className="text-[10px]"
-                    >
-                      {task.completed ? "Completed" : "Pending"}
-                    </Badge>
-
-                    <button
-                      type="button"
-                      onClick={() => setTaskToDelete(task)}
-                      className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
-                      title="Delete task"
-                      aria-label="Delete task"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* Add Task Modal Dialog (Practical 3: Responsive width and viewport constraint) */}
+      {/* Add Task Modal Dialog */}
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
         <DialogContent onClose={() => setIsAddModalOpen(false)}>
           <DialogHeader>
@@ -478,7 +688,7 @@ export function TasksPage() {
                 type="text"
                 value={formData.title}
                 onChange={handleFormChange}
-                placeholder="e.g., Complete Practical 3 Responsive Design"
+                placeholder="e.g., Complete Practical 4 Browser APIs"
                 className={`w-full rounded-md border px-3 py-2 text-xs focus:outline-none focus:ring-1 ${
                   formErrors.title ? "border-rose-400 focus:ring-rose-500" : "border-slate-200 focus:ring-blue-600"
                 }`}
