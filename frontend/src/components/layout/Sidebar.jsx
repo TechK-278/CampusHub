@@ -9,6 +9,7 @@ import {
   CheckSquare,
   UserCircle,
   UserPlus,
+  Palette,
   GraduationCap,
   Sparkles,
   Server
@@ -24,6 +25,7 @@ export const navigationItems = [
   { id: "notices", label: "Notices", icon: BellRing, badge: "New" },
   { id: "tasks", label: "Tasks", icon: CheckSquare },
   { id: "student-registration", label: "Registration", icon: UserPlus, badge: "Bootstrap" },
+  { id: "tailwind-demo", label: "Tailwind CSS", icon: Palette, badge: "P6" },
   { id: "profile", label: "Profile", icon: UserCircle },
 ];
 
