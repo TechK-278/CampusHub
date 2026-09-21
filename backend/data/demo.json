@@ -1,0 +1,106 @@
+{
+  "application": "CampusHub",
+  "portalSubtitle": "College Management Portal",
+  "version": "1.0.0",
+  "academicSession": "2025-2026",
+  "student": {
+    "id": "STU-2026-001",
+    "rollNo": "CS2026001",
+    "name": "Aarav Mehta",
+    "email": "aarav.mehta@campushub.edu",
+    "department": "Computer Science and Engineering",
+    "program": "B.Tech",
+    "semester": 5,
+    "division": "A",
+    "batch": "B1",
+    "mentor": "Dr. Rajesh Sharma",
+    "attendancePercentage": 88.4,
+    "currentCGPA": 8.62
+  },
+  "enrolledCourses": [
+    {
+      "code": "CS501",
+      "title": "Full Stack Web Development",
+      "credits": 4,
+      "faculty": "Prof. Sanjay Patel",
+      "attendance": 92.5
+    },
+    {
+      "code": "CS502",
+      "title": "Database Management Systems",
+      "credits": 4,
+      "faculty": "Dr. Ananya Roy",
+      "attendance": 85.0
+    },
+    {
+      "code": "CS503",
+      "title": "Computer Networks",
+      "credits": 4,
+      "faculty": "Prof. Vikram Joshi",
+      "attendance": 88.0
+    },
+    {
+      "code": "CS504",
+      "title": "Operating Systems",
+      "credits": 3,
+      "faculty": "Dr. Neha Verma",
+      "attendance": 86.5
+    },
+    {
+      "code": "CS505",
+      "title": "Design & Analysis of Algorithms",
+      "credits": 4,
+      "faculty": "Prof. Harish Nair",
+      "attendance": 90.0
+    }
+  ],
+  "notices": [
+    {
+      "id": "NOT-001",
+      "title": "Mid-Semester Examination Schedule Announced",
+      "category": "Academic",
+      "date": "2026-09-22",
+      "issuedBy": "Controller of Examinations"
+    },
+    {
+      "id": "NOT-002",
+      "title": "Submission Deadline for FSD Practical Assignment 1",
+      "category": "Department",
+      "date": "2026-09-24",
+      "issuedBy": "Department of CSE"
+    },
+    {
+      "id": "NOT-003",
+      "title": "Campus Placement Orientation Session for 3rd Year",
+      "category": "Career",
+      "date": "2026-09-28",
+      "issuedBy": "Training & Placement Cell"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "ASN-101",
+      "courseCode": "CS501",
+      "title": "Practical 1: Server-Side JS & JSON Basics",
+      "dueDate": "2026-09-25",
+      "status": "In Progress",
+      "maxMarks": 50
+    },
+    {
+      "id": "ASN-102",
+      "courseCode": "CS502",
+      "title": "Lab Task: ER Diagram & Normalization (3NF)",
+      "dueDate": "2026-09-27",
+      "status": "Pending",
+      "maxMarks": 30
+    },
+    {
+      "id": "ASN-103",
+      "courseCode": "CS503",
+      "title": "Subnetting and Routing Table Simulation",
+      "dueDate": "2026-09-30",
+      "status": "Pending",
+      "maxMarks": 25
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "campushub-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusHub Backend API & Demonstration Scripts",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "demo:hello": "node demos/helloWorld.js",
+    "demo:json": "node demos/jsonObjectDemo.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {}
+}

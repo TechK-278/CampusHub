@@ -1,0 +1,247 @@
+/**
+ * CampusHub — Mock Academic Data for Phase 1 Frontend Portal
+ * Complies with Fictional Data Guidelines (No real student credentials or PII).
+ */
+
+export const mockStudent = {
+  id: "STU-2026-001",
+  name: "Aarav Mehta",
+  rollNo: "CS2026001",
+  email: "aarav.mehta@campushub.edu",
+  department: "Computer Science and Engineering",
+  program: "B.Tech Computer Science",
+  semester: 5,
+  division: "Division A",
+  batch: "Batch B1",
+  academicYear: "2025-2026",
+  mentor: "Dr. Rajesh Sharma",
+  avatarUrl: "",
+  initials: "AM",
+};
+
+export const mockStats = [
+  {
+    id: "attendance",
+    title: "Overall Attendance",
+    value: "88.4%",
+    caption: "Above mandatory 85% threshold",
+    trend: "+1.2% this month",
+    trendType: "positive",
+    statusBadge: "Eligible",
+    badgeVariant: "success",
+  },
+  {
+    id: "courses",
+    title: "Enrolled Courses",
+    value: "5",
+    caption: "19 Credits total this semester",
+    trend: "All active",
+    trendType: "neutral",
+    statusBadge: "Regular",
+    badgeVariant: "default",
+  },
+  {
+    id: "assignments",
+    title: "Pending Tasks",
+    value: "3",
+    caption: "Due within next 7 days",
+    trend: "1 due this Friday",
+    trendType: "warning",
+    statusBadge: "Action Needed",
+    badgeVariant: "warning",
+  },
+  {
+    id: "cgpa",
+    title: "Cumulative GPA",
+    value: "8.62",
+    caption: "Semester 4 SPI: 8.80",
+    trend: "Top 10% in Division",
+    trendType: "positive",
+    statusBadge: "First Class Distinction",
+    badgeVariant: "secondary",
+  },
+];
+
+export const mockSchedule = [
+  {
+    id: "SCH-1",
+    courseCode: "CS501",
+    courseName: "Full Stack Web Development",
+    time: "09:15 AM - 10:15 AM",
+    room: "Lab 302, Academic Block A",
+    type: "Practical / Lab",
+    faculty: "Prof. Sanjay Patel",
+    status: "Completed",
+  },
+  {
+    id: "SCH-2",
+    courseCode: "CS502",
+    courseName: "Database Management Systems",
+    time: "10:30 AM - 11:30 AM",
+    room: "Room 204, Academic Block B",
+    type: "Lecture",
+    faculty: "Dr. Ananya Roy",
+    status: "In Progress",
+  },
+  {
+    id: "SCH-3",
+    courseCode: "CS503",
+    courseName: "Computer Networks",
+    time: "11:45 AM - 12:45 PM",
+    room: "Room 105, Academic Block B",
+    type: "Lecture",
+    faculty: "Prof. Vikram Joshi",
+    status: "Upcoming",
+  },
+  {
+    id: "SCH-4",
+    courseCode: "CS504",
+    courseName: "Operating Systems Lab",
+    time: "02:00 PM - 04:00 PM",
+    room: "Systems Lab 101, Ground Floor",
+    type: "Practical / Lab",
+    faculty: "Dr. Neha Verma",
+    status: "Upcoming",
+  },
+];
+
+export const mockAssignments = [
+  {
+    id: "ASN-101",
+    courseCode: "CS501",
+    title: "Practical 1: Server-Side JS & JSON Basics",
+    dueDate: "2026-09-25",
+    dueTime: "11:59 PM",
+    status: "In Progress",
+    totalMarks: 50,
+    badgeVariant: "warning",
+  },
+  {
+    id: "ASN-102",
+    courseCode: "CS502",
+    title: "Lab Task: ER Diagram & Normalization (3NF)",
+    dueDate: "2026-09-27",
+    dueTime: "05:00 PM",
+    status: "Pending",
+    totalMarks: 30,
+    badgeVariant: "destructive",
+  },
+  {
+    id: "ASN-103",
+    courseCode: "CS503",
+    title: "Subnetting and Routing Table Simulation",
+    dueDate: "2026-09-30",
+    dueTime: "11:59 PM",
+    status: "Pending",
+    totalMarks: 25,
+    badgeVariant: "secondary",
+  },
+];
+
+export const mockNotices = [
+  {
+    id: "NOT-001",
+    title: "Mid-Semester Examination Schedule Announced",
+    description: "The official timetable for B.Tech Semester 5 Mid-Semester Examinations has been published. Exams commence on 10th October 2026.",
+    category: "Academic",
+    date: "2026-09-21",
+    issuedBy: "Controller of Examinations",
+    badgeVariant: "default",
+    isUrgent: true,
+  },
+  {
+    id: "NOT-002",
+    title: "Submission Deadline for FSD Practical Assignment 1",
+    description: "All students are instructed to commit and demonstrate Practical 1 submissions before the end of the lab session.",
+    category: "Department",
+    date: "2026-09-20",
+    issuedBy: "Department of CSE",
+    badgeVariant: "secondary",
+    isUrgent: false,
+  },
+  {
+    id: "NOT-003",
+    title: "Industry Expert Talk on Cloud-Native Systems",
+    description: "Department of CSE is hosting a guest lecture on Modern Microservices & Distributed Architecture on Saturday at 11:00 AM.",
+    category: "Event",
+    date: "2026-09-18",
+    issuedBy: "CSE Student Association",
+    badgeVariant: "secondary",
+    isUrgent: false,
+  },
+];
+
+export const mockActivities = [
+  {
+    id: "ACT-01",
+    title: "Assignment Submission Confirmed",
+    detail: "CS501 Practical 1 draft saved to workspace",
+    timestamp: "10 mins ago",
+  },
+  {
+    id: "ACT-02",
+    title: "Attendance Recorded",
+    detail: "Marked Present for CS501 Lab (09:15 - 10:15 AM)",
+    timestamp: "1 hour ago",
+  },
+  {
+    id: "ACT-03",
+    title: "Notice Acknowledged",
+    detail: "Read 'Mid-Semester Examination Schedule Announced'",
+    timestamp: "3 hours ago",
+  },
+  {
+    id: "ACT-04",
+    title: "Course Material Downloaded",
+    detail: "Downloaded CS502 Unit 2 Schema Design Notes",
+    timestamp: "Yesterday",
+  },
+];
+
+export const mockCourses = [
+  {
+    code: "CS501",
+    name: "Full Stack Web Development",
+    credits: 4,
+    faculty: "Prof. Sanjay Patel",
+    attendance: "92.5%",
+    schedule: "Mon 09:15 AM (Lab), Wed 10:30 AM",
+    syllabusProgress: 35,
+  },
+  {
+    code: "CS502",
+    name: "Database Management Systems",
+    credits: 4,
+    faculty: "Dr. Ananya Roy",
+    attendance: "85.0%",
+    schedule: "Mon 10:30 AM, Thu 09:15 AM",
+    syllabusProgress: 40,
+  },
+  {
+    code: "CS503",
+    name: "Computer Networks",
+    credits: 4,
+    faculty: "Prof. Vikram Joshi",
+    attendance: "88.0%",
+    schedule: "Mon 11:45 AM, Fri 10:30 AM",
+    syllabusProgress: 30,
+  },
+  {
+    code: "CS504",
+    name: "Operating Systems",
+    credits: 3,
+    faculty: "Dr. Neha Verma",
+    attendance: "86.5%",
+    schedule: "Mon 02:00 PM (Lab), Tue 11:45 AM",
+    syllabusProgress: 38,
+  },
+  {
+    code: "CS505",
+    name: "Design & Analysis of Algorithms",
+    credits: 4,
+    faculty: "Prof. Harish Nair",
+    attendance: "90.0%",
+    schedule: "Tue 09:15 AM, Thu 11:45 AM",
+    syllabusProgress: 45,
+  },
+];

@@ -1,0 +1,22 @@
+{
+  "name": "campushub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusHub — College Management Portal",
+  "scripts": {
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend start",
+    "demo:hello": "node backend/demos/helloWorld.js",
+    "demo:json": "node backend/demos/jsonObjectDemo.js",
+    "install:all": "npm --prefix backend install && npm --prefix frontend install"
+  },
+  "keywords": [
+    "campushub",
+    "college-management-portal",
+    "academic-management"
+  ],
+  "author": "",
+  "license": "ISC"
+}
