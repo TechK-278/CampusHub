@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Complete FSD Practical 2 Submission",
+      "description": "Finish the JSON file reading and REST API task manager implementation.",
+      "course": "Full Stack Web Development",
+      "dueDate": "2026-09-25",
+      "completed": false,
+      "createdAt": "2026-09-21T09:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "DBMS Lab: Normalize Student Schema to 3NF",
+      "description": "Resolve partial and transitive dependencies for University Library schema.",
+      "course": "Database Management Systems",
+      "dueDate": "2026-09-27",
+      "completed": false,
+      "createdAt": "2026-09-21T10:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "CN Assignment: Cisco Packet Tracer Subnetting",
+      "description": "Design CIDR routing table for 4 campus subnets with 60 hosts each.",
+      "course": "Computer Networks",
+      "dueDate": "2026-09-30",
+      "completed": false,
+      "createdAt": "2026-09-21T11:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "title": "Review OS CPU Scheduling Algorithms",
+      "description": "Prepare Round Robin and SJF calculations for upcoming internal evaluation.",
+      "course": "Operating Systems",
+      "dueDate": "2026-10-02",
+      "completed": true,
+      "createdAt": "2026-09-20T14:20:00.000Z"
+    }
+  ]
+}

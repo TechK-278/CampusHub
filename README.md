@@ -4,16 +4,17 @@
 
 ---
 
-## Current Status: Phase 1 (Foundation + Initial Portal UI)
+## Current Status: Phase 2 (JSON + Task Management)
 
-Phase 1 establishes the clean project foundation, server-side JavaScript demos, structured JSON handling, backend health check API, and an initial responsive student portal UI.
+Phase 2 implements structured JSON data handling, multi-dimensional JSON arrays, external JSON reading, and a full web-based academic Task Management system backed by JSON storage (`backend/data/tasks.json`) and Express REST API endpoints.
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3, Lucide React, shadcn/ui design patterns
-- **Backend:** Node.js, Express.js 4, CORS
+- **Backend:** Node.js (v24.x), Express.js 4, CORS
+- **Storage Layer (Phase 2):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
 ---
@@ -25,30 +26,38 @@ CampusHub/
 ├── frontend/                     # React + Vite + Tailwind frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ui/               # Card, Button, Badge, Avatar, Separator, Input
-│   │   │   ├── layout/           # Header, Sidebar, PortalLayout (Responsive)
+│   │   │   ├── ui/               # Card, Button, Badge, Avatar, Separator, Input, Dialog
+│   │   │   ├── layout/           # Header, Sidebar, PortalLayout (Responsive Drawer)
 │   │   │   └── dashboard/        # StatCards, Schedule, Assignments, Notices, Activity
-│   │   ├── pages/                # Dashboard, Courses, Attendance, Assignments, Results, etc.
+│   │   ├── pages/                # TasksPage, DashboardPage, CoursesPage, AttendancePage, etc.
+│   │   ├── services/             # taskService.js (REST API Client)
 │   │   ├── data/                 # Mock academic dataset (Aarav Mehta, CS2026001)
 │   │   ├── lib/                  # Utility functions
 │   │   ├── App.jsx               # Application root
 │   │   ├── main.jsx              # DOM entry
 │   │   └── index.css             # Academic color variables & Tailwind styles
+│   ├── components.json
 │   ├── package.json
 │   ├── tailwind.config.js
 │   └── vite.config.js
 │
 ├── backend/                      # Node.js + Express backend
-│   ├── app.js                    # Express app & /api/health endpoint
+│   ├── app.js                    # Express app with /api/health and /api/tasks routes
+│   ├── routes/                   # taskRoutes.js (REST Endpoints)
+│   ├── controllers/              # taskController.js (JSON CRUD Logic)
 │   ├── package.json
 │   ├── data/
-│   │   └── demo.json             # Fictional academic JSON dataset
+│   │   ├── demo.json             # Fictional academic JSON dataset
+│   │   └── tasks.json            # File-based JSON task storage
 │   └── demos/
 │       ├── helloWorld.js         # Practical 1: Server-side JS demonstration
-│       └── jsonObjectDemo.js     # Practical 1: JSON handling demonstration
+│       ├── jsonObjectDemo.js     # Practical 1 & 2 (Req I): JSON object creation & display
+│       ├── readJsonDemo.js       # Practical 2 (Req II): External JSON file reader
+│       └── multiJsonDemo.js      # Practical 2 (Req III): Multi-dimensional JSON arrays
 │
 ├── docs/
-│   └── practical-1.md            # Detailed Practical 1 documentation & verification
+│   ├── practical-1.md            # Practical 1 documentation & verification
+│   └── practical-2.md            # Practical 2 documentation & verification
 │
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
@@ -69,13 +78,19 @@ npm --prefix backend install
 npm --prefix frontend install
 ```
 
-### 2. Run Practical 1 Demos
+### 2. Run Practical Demonstrations
 ```bash
-# Server-Side JavaScript demo
+# Practical 1: Server-Side JavaScript demo
 npm run demo:hello
 
-# JSON Object manipulation demo
+# Practical 1 & 2 (I): JSON Object manipulation demo
 npm run demo:json
+
+# Practical 2 (II): Read External JSON File demo
+npm run demo:read-json
+
+# Practical 2 (III): Multi-dimensional JSON Arrays demo
+npm run demo:multi-json
 ```
 
 ### 3. Start Backend Server
@@ -83,6 +98,7 @@ npm run demo:json
 npm run start:backend
 # Server runs at: http://localhost:5000
 # Health check: http://localhost:5000/api/health
+# Tasks API: http://localhost:5000/api/tasks
 ```
 
 ### 4. Start Frontend Development Server
@@ -90,6 +106,18 @@ npm run start:backend
 npm run dev:frontend
 # Application runs at: http://localhost:5173
 ```
+
+---
+
+## 📋 Task REST API Reference (Phase 2)
+
+| Method | Endpoint | Description | Request Body |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/tasks` | Get all academic tasks from `tasks.json` | None |
+| `GET` | `/api/tasks/:id` | Get single task by ID | None |
+| `POST` | `/api/tasks` | Create task with validation | `{ title, course, dueDate, description }` |
+| `PUT` | `/api/tasks/:id` | Update completion status / fields | `{ completed, title, course, dueDate, description }` |
+| `DELETE` | `/api/tasks/:id` | Delete task from `tasks.json` | None |
 
 ---
 
@@ -101,6 +129,10 @@ npm run dev:frontend
 | **Practical 1** | `backend/demos/jsonObjectDemo.js` | JSON creation, parsing, query & serialization | Completed |
 | **Practical 1** | `backend/app.js` | Express server & `/api/health` JSON endpoint | Completed |
 | **Practical 1** | `frontend/` | Academic portal shell, responsive layout, student dashboard | Completed |
+| **Practical 2 (I)** | `backend/demos/jsonObjectDemo.js` | Create and display JSON object in terminal | Completed |
+| **Practical 2 (II)** | `backend/demos/readJsonDemo.js` | Read and display external JSON file (`demo.json`) | Completed |
+| **Practical 2 (III)** | `backend/demos/multiJsonDemo.js` | Multi-dimensional JSON arrays and element access | Completed |
+| **Practical 2 (IV)** | `frontend/src/pages/TasksPage.jsx` | Web application manipulating JSON task data via REST API | Completed |
 
 ---
 
@@ -108,4 +140,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 1 scoped (no databases or authentication backends added prematurely).
+- Strictly Phase 2 scoped (file-based JSON storage, no premature MySQL/MongoDB or authentication).

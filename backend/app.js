@@ -35,7 +35,11 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Optional Phase 1 Read-only Demo Data Endpoint
+// Task Management Routes (Phase 2)
+const taskRoutes = require("./routes/taskRoutes");
+app.use("/api/tasks", taskRoutes);
+
+// Optional Read-only Demo Data Endpoint
 app.get("/api/demo-data", (req, res) => {
   try {
     const demoDataPath = path.join(__dirname, "data", "demo.json");

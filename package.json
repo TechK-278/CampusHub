@@ -10,6 +10,8 @@
     "start:backend": "npm --prefix backend start",
     "demo:hello": "node backend/demos/helloWorld.js",
     "demo:json": "node backend/demos/jsonObjectDemo.js",
+    "demo:read-json": "node backend/demos/readJsonDemo.js",
+    "demo:multi-json": "node backend/demos/multiJsonDemo.js",
     "install:all": "npm --prefix backend install && npm --prefix frontend install"
   },
   "keywords": [
