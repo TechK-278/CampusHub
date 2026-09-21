@@ -4,21 +4,22 @@
 
 ---
 
-## Current Status: Phase 4 (Browser APIs — Geolocation + Local Storage + Drag & Drop)
+## Current Status: Phase 5 (Bootstrap 5 + Student Registration)
 
-Phase 4 implements browser API capabilities within the academic portal:
-1. **Geolocation API:** Student dashboard Campus & Browser Location widget with permission/error state handling.
-2. **Local Storage:** Client-side preference management (`campushub:lastVisitedPage`, `campushub:compactDashboard`, `campushub:taskFilter`, `campushub:taskOrder`).
-3. **Native HTML5 Drag & Drop:** Custom task card reordering on the Tasks page with Local Storage order persistence and keyboard accessibility.
+Phase 5 implements Bootstrap 5 within an isolated academic module:
+1. **Bootstrap Online (CDN):** Official jsDelivr CDN integration with component showcase.
+2. **Bootstrap Offline (Local):** Local npm package (`bootstrap@5.3.8`) bundling for zero external network reliance.
+3. **Student Registration Form:** Fully validated Bootstrap 5 registration form with responsive grid layout, input validation, and result summary card.
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3, Lucide React, shadcn/ui design patterns
+- **Bootstrap Module:** Bootstrap 5.3 (CDN + Local npm package for Practical 5 isolation)
 - **Browser APIs:** Geolocation (`navigator.geolocation`), Local Storage (`localStorage`), Native HTML5 Drag and Drop (`draggable`, `dragstart`, `dragover`, `drop`, `dragend`)
 - **Backend:** Node.js (v24.x), Express.js 4, CORS
-- **Storage Layer (Phases 1-4):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
+- **Storage Layer (Phases 1-5):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
 ---
@@ -63,7 +64,8 @@ CampusHub/
 │   ├── practical-1.md            # Practical 1 documentation & verification
 │   ├── practical-2.md            # Practical 2 documentation & verification
 │   ├── practical-3.md            # Practical 3 documentation & verification
-│   └── practical-4.md            # Practical 4 documentation & verification
+│   ├── practical-4.md            # Practical 4 documentation & verification
+│   └── practical-5.md            # Practical 5 documentation & verification
 │
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
@@ -146,6 +148,9 @@ npm run dev:frontend
 | **Practical 4 (I)** | `frontend/src/components/dashboard/LocationWidget.jsx` | Geolocation API (`navigator.geolocation`) verification | Completed |
 | **Practical 4 (II)**| `frontend/src/lib/storage.js` | Browser Local Storage preference management | Completed |
 | **Practical 4 (III)**| `frontend/src/pages/TasksPage.jsx` | Native HTML5 Drag & Drop task card reordering | Completed |
+| **Practical 5 (I)** | `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Online CDN integration & component demo | Completed |
+| **Practical 5 (II)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Offline/Local package bundling (`bootstrap@5.3.8`) | Completed |
+| **Practical 5 (III)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Student Registration form with validation & summary | Completed |
 
 ---
 
@@ -153,4 +158,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 4 scoped.
+- Strictly Phase 5 scoped.

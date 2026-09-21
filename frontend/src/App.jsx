@@ -7,6 +7,7 @@ import { AssignmentsPage } from "@/pages/AssignmentsPage";
 import { ResultsPage } from "@/pages/ResultsPage";
 import { NoticesPage } from "@/pages/NoticesPage";
 import { TasksPage } from "@/pages/TasksPage";
+import { StudentRegistrationPage } from "@/pages/StudentRegistrationPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { mockStudent } from "@/data/mockData";
 import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
@@ -19,6 +20,7 @@ const VALID_TABS = [
   "results",
   "notices",
   "tasks",
+  "student-registration",
   "profile"
 ];
 
@@ -51,6 +53,8 @@ export default function App() {
         return <NoticesPage />;
       case "tasks":
         return <TasksPage />;
+      case "student-registration":
+        return <StudentRegistrationPage />;
       case "profile":
         return <ProfilePage />;
       default:
