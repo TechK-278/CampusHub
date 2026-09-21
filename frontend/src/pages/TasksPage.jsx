@@ -202,34 +202,34 @@ export function TasksPage() {
   });
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Page Header (Practical 3: Responsive fluid heading & wrapping controls) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">My Tasks</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-fluid-title text-slate-900">My Tasks</h1>
             <Badge variant="secondary" className="text-xs">JSON Storage</Badge>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-fluid-subtitle text-slate-500 mt-0.5">
             Manage your academic tasks, assignments, and practical deadlines
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={fetchTasksList} 
             disabled={loading}
-            className="text-xs gap-1.5"
+            className="text-xs gap-1.5 h-8 sm:h-9"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
+            <span className="hidden min-[380px]:inline">Refresh</span>
           </Button>
           <Button 
             size="sm" 
             onClick={handleOpenAddModal} 
-            className="text-xs gap-1.5"
+            className="text-xs gap-1.5 h-8 sm:h-9"
           >
             <Plus className="h-4 w-4" />
             Add Task
@@ -250,29 +250,30 @@ export function TasksPage() {
             ) : (
               <AlertCircle className="h-4 w-4 text-rose-600 shrink-0" />
             )}
-            <span>{feedback.message}</span>
+            <span className="break-words">{feedback.message}</span>
           </div>
           <button 
             onClick={() => setFeedback(null)} 
-            className="text-slate-400 hover:text-slate-600 font-bold ml-3"
+            className="text-slate-400 hover:text-slate-600 font-bold ml-3 shrink-0"
+            aria-label="Dismiss feedback"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* Task Summary Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-4 border-slate-200">
+      {/* Task Summary Metrics (1 col mobile, 3 cols tablet/desktop) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        <Card className="p-4 border-slate-200 w-full">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-500">Total Tasks</span>
             <Layers className="h-4 w-4 text-slate-400" />
           </div>
           <div className="text-2xl font-bold text-slate-900 mt-1">{totalCount}</div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Stored in backend/data/tasks.json</div>
+          <div className="text-[11px] text-slate-500 mt-0.5 truncate">Stored in backend/data/tasks.json</div>
         </Card>
 
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 w-full">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-500">Pending</span>
             <Clock className="h-4 w-4 text-amber-500" />
@@ -281,7 +282,7 @@ export function TasksPage() {
           <div className="text-[11px] text-amber-600 mt-0.5">Requires student action</div>
         </Card>
 
-        <Card className="p-4 border-slate-200">
+        <Card className="p-4 border-slate-200 w-full">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-500">Completed</span>
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -294,7 +295,7 @@ export function TasksPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-slate-200 pb-2">
         <button
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors ${
@@ -345,7 +346,7 @@ export function TasksPage() {
           </Button>
         </Card>
       ) : filteredTasks.length === 0 ? (
-        <Card className="p-10 text-center space-y-3 border-dashed">
+        <Card className="p-8 sm:p-10 text-center space-y-3 border-dashed">
           <Inbox className="h-10 w-10 text-slate-300 mx-auto" />
           <div className="space-y-1">
             <h3 className="text-sm font-semibold text-slate-800">
@@ -369,18 +370,18 @@ export function TasksPage() {
           {filteredTasks.map((task) => (
             <Card 
               key={task.id} 
-              className={`transition-all hover:border-slate-300 ${
+              className={`transition-all hover:border-slate-300 w-full ${
                 task.completed ? "bg-slate-50/70 border-slate-200" : "bg-white"
               }`}
             >
-              <CardContent className="p-4 sm:p-5">
+              <CardContent className="p-3.5 sm:p-5">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   {/* Left: Checkbox & Task details */}
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-2.5 sm:gap-3 flex-1 min-w-0">
                     <button
                       type="button"
                       onClick={() => handleToggleComplete(task)}
-                      className="mt-0.5 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none"
+                      className="mt-0.5 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none shrink-0"
                       aria-label={task.completed ? "Mark pending" : "Mark completed"}
                     >
                       {task.completed ? (
@@ -390,33 +391,33 @@ export function TasksPage() {
                       )}
                     </button>
 
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className={`text-sm font-semibold leading-snug ${
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <span className={`text-xs sm:text-sm font-semibold leading-snug break-words ${
                           task.completed ? "line-through text-slate-400" : "text-slate-900"
                         }`}>
                           {task.title}
                         </span>
-                        <Badge variant="outline" className="text-[10px] font-mono">
-                          ID: #{task.id}
+                        <Badge variant="outline" className="text-[10px] font-mono shrink-0">
+                          #{task.id}
                         </Badge>
                       </div>
 
                       {task.description && (
-                        <p className={`text-xs ${
+                        <p className={`text-xs break-words ${
                           task.completed ? "line-through text-slate-400" : "text-slate-600"
                         }`}>
                           {task.description}
                         </p>
                       )}
 
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-1">
-                        <span className="flex items-center gap-1">
-                          <BookOpen className="h-3.5 w-3.5 text-slate-400" />
-                          {task.course}
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 pt-1">
+                        <span className="flex items-center gap-1 truncate">
+                          <BookOpen className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                          <span className="truncate">{task.course}</span>
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                        <span className="flex items-center gap-1 shrink-0">
+                          <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                           Due: {task.dueDate}
                         </span>
                       </div>
@@ -449,7 +450,7 @@ export function TasksPage() {
         </div>
       )}
 
-      {/* Add Task Modal Dialog */}
+      {/* Add Task Modal Dialog (Practical 3: Responsive width and viewport constraint) */}
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
         <DialogContent onClose={() => setIsAddModalOpen(false)}>
           <DialogHeader>
@@ -477,7 +478,7 @@ export function TasksPage() {
                 type="text"
                 value={formData.title}
                 onChange={handleFormChange}
-                placeholder="e.g., Complete Practical 2 JSON Implementation"
+                placeholder="e.g., Complete Practical 3 Responsive Design"
                 className={`w-full rounded-md border px-3 py-2 text-xs focus:outline-none focus:ring-1 ${
                   formErrors.title ? "border-rose-400 focus:ring-rose-500" : "border-slate-200 focus:ring-blue-600"
                 }`}
@@ -572,7 +573,7 @@ export function TasksPage() {
         <DialogContent onClose={() => !deleting && setTaskToDelete(null)}>
           <DialogHeader>
             <DialogTitle className="text-rose-600 flex items-center gap-2">
-              <AlertCircle className="h-5 w-5" />
+              <AlertCircle className="h-5 w-5 shrink-0" />
               Confirm Task Deletion
             </DialogTitle>
             <DialogDescription>
@@ -582,7 +583,7 @@ export function TasksPage() {
 
           {taskToDelete && (
             <div className="p-3 bg-slate-50 rounded-md border border-slate-100 text-xs space-y-1">
-              <p className="font-semibold text-slate-900">{taskToDelete.title}</p>
+              <p className="font-semibold text-slate-900 break-words">{taskToDelete.title}</p>
               <p className="text-slate-500">{taskToDelete.course} • Due: {taskToDelete.dueDate}</p>
             </div>
           )}

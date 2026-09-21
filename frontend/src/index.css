@@ -42,9 +42,82 @@
     --radius: 0.5rem;
   }
 
-  body {
+  html, body {
     @apply bg-slate-50 text-slate-900 font-sans antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden; /* Practical 3: Prevent unintended horizontal page scrolling */
+    width: 100%;
+    min-height: 100%;
+  }
+}
+
+/* ============================================================
+ * Practical 3: Requirement III — Responsive Text using `vw`
+ * Fluid typography utility classes using clamp() with vw units
+ * ============================================================ */
+.text-fluid-title {
+  /* Fluid scaling from 1.125rem (18px) on mobile to 1.5rem (24px) on desktop using 2.2vw */
+  font-size: clamp(1.125rem, 0.875rem + 1.25vw, 1.5rem);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-fluid-subtitle {
+  /* Fluid scaling from 0.75rem (12px) to 0.875rem (14px) using 0.5vw */
+  font-size: clamp(0.75rem, 0.65rem + 0.4vw, 0.875rem);
+  line-height: 1.4;
+}
+
+.text-fluid-stat {
+  /* Fluid metric counter scaling from 1.5rem (24px) to 1.875rem (30px) using 1.5vw */
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* ============================================================
+ * Practical 3: Requirement II — Width, Max-Width & Responsive Images
+ * Contained responsive layout containers and adaptive media
+ * ============================================================ */
+.portal-container {
+  width: 100%;
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.responsive-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+ * Practical 3: Requirement IV — Media Queries & Breakpoints
+ * Documented breakpoints: Mobile (<640px), Tablet (640-1023px), Desktop (1024px+)
+ * ============================================================ */
+@media (max-width: 639px) {
+  /* Mobile specific optimizations */
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet specific optimizations */
+  .tablet-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop optimizations */
+  .desktop-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
 

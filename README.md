@@ -4,9 +4,9 @@
 
 ---
 
-## Current Status: Phase 2 (JSON + Task Management)
+## Current Status: Phase 3 (Responsive Design)
 
-Phase 2 implements structured JSON data handling, multi-dimensional JSON arrays, external JSON reading, and a full web-based academic Task Management system backed by JSON storage (`backend/data/tasks.json`) and Express REST API endpoints.
+Phase 3 implements comprehensive mobile-to-desktop responsive design, including viewport meta tag scaling, container `width`/`max-width` bounding, responsive images and avatars, fluid `vw`-based typography scaling (`clamp()`), CSS media queries, collapsible navigation drawer, mobile search overlay, and contained table scrolling with zero horizontal page overflow.
 
 ---
 
@@ -14,7 +14,7 @@ Phase 2 implements structured JSON data handling, multi-dimensional JSON arrays,
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3, Lucide React, shadcn/ui design patterns
 - **Backend:** Node.js (v24.x), Express.js 4, CORS
-- **Storage Layer (Phase 2):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
+- **Storage Layer (Phases 1-3):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
 ---
@@ -27,15 +27,15 @@ CampusHub/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── ui/               # Card, Button, Badge, Avatar, Separator, Input, Dialog
-│   │   │   ├── layout/           # Header, Sidebar, PortalLayout (Responsive Drawer)
+│   │   │   ├── layout/           # Header (Mobile Search), Sidebar (Drawer), PortalLayout
 │   │   │   └── dashboard/        # StatCards, Schedule, Assignments, Notices, Activity
-│   │   ├── pages/                # TasksPage, DashboardPage, CoursesPage, AttendancePage, etc.
+│   │   ├── pages/                # TasksPage, DashboardPage, CoursesPage, AttendancePage, ProfilePage, etc.
 │   │   ├── services/             # taskService.js (REST API Client)
 │   │   ├── data/                 # Mock academic dataset (Aarav Mehta, CS2026001)
 │   │   ├── lib/                  # Utility functions
 │   │   ├── App.jsx               # Application root
 │   │   ├── main.jsx              # DOM entry
-│   │   └── index.css             # Academic color variables & Tailwind styles
+│   │   └── index.css             # Academic color variables, fluid vw typography & media queries
 │   ├── components.json
 │   ├── package.json
 │   ├── tailwind.config.js
@@ -57,7 +57,8 @@ CampusHub/
 │
 ├── docs/
 │   ├── practical-1.md            # Practical 1 documentation & verification
-│   └── practical-2.md            # Practical 2 documentation & verification
+│   ├── practical-2.md            # Practical 2 documentation & verification
+│   └── practical-3.md            # Practical 3 documentation & verification
 │
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
@@ -109,7 +110,7 @@ npm run dev:frontend
 
 ---
 
-## 📋 Task REST API Reference (Phase 2)
+## 📋 Task REST API Reference
 
 | Method | Endpoint | Description | Request Body |
 | :--- | :--- | :--- | :--- |
@@ -133,6 +134,10 @@ npm run dev:frontend
 | **Practical 2 (II)** | `backend/demos/readJsonDemo.js` | Read and display external JSON file (`demo.json`) | Completed |
 | **Practical 2 (III)** | `backend/demos/multiJsonDemo.js` | Multi-dimensional JSON arrays and element access | Completed |
 | **Practical 2 (IV)** | `frontend/src/pages/TasksPage.jsx` | Web application manipulating JSON task data via REST API | Completed |
+| **Practical 3 (I)** | `frontend/index.html` | Responsive viewport meta tag configuration | Completed |
+| **Practical 3 (II)** | `frontend/src/` | Width, max-width, and responsive media scaling | Completed |
+| **Practical 3 (III)**| `frontend/src/index.css` | Responsive fluid typography using `vw` & `clamp()` | Completed |
+| **Practical 3 (IV)** | `frontend/src/` | Responsive layout, media queries, and drawer navigation | Completed |
 
 ---
 
@@ -140,4 +145,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 2 scoped (file-based JSON storage, no premature MySQL/MongoDB or authentication).
+- Strictly Phase 3 scoped.
