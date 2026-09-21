@@ -10,6 +10,7 @@ import {
   UserCircle,
   UserPlus,
   Palette,
+  Code2,
   GraduationCap,
   Sparkles,
   Server
@@ -26,6 +27,7 @@ export const navigationItems = [
   { id: "tasks", label: "Tasks", icon: CheckSquare },
   { id: "student-registration", label: "Registration", icon: UserPlus, badge: "Bootstrap" },
   { id: "tailwind-demo", label: "Tailwind CSS", icon: Palette, badge: "P6" },
+  { id: "vue-demo", label: "Vue.js", icon: Code2, badge: "P7" },
   { id: "profile", label: "Profile", icon: UserCircle },
 ];
 

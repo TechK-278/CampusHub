@@ -4,24 +4,23 @@
 
 ---
 
-## Current Status: Phase 6 (Tailwind CSS)
+## Current Status: Phase 7 (Vue.js Custom Directives)
 
-Phase 6 demonstrates Tailwind CSS design system and utility capabilities:
-1. **Utility-First Styling:** Token-based colors, typography hierarchy, spacing scale, elevation shadows, and rounded borders.
-2. **Responsive Breakpoints:** Multi-column layouts adapting dynamically across `sm:`, `md:`, `lg:`, and `xl:`.
-3. **Flexbox & CSS Grid:** Faculty header bars with flex alignment and responsive academic curriculum grid layouts.
-4. **State Variants:** Interactive button states, focus-ring input fields, active scale effects, and disabled modifiers.
-5. **Reusable Academic Components:** Course enrollment data table with row hover transitions and status badges.
+Phase 7 implements Vue.js within an isolated practical demonstration module:
+1. **Custom Directive (Uppercase on Click):** `v-uppercase-click` converting clicked text/inputs to uppercase via Vue directive lifecycle hooks.
+2. **Dynamic List & Reactivity:** Reactive academic course catalog supporting dynamic additions, removals, and computed credit calculations.
+3. **Human-Readable Date Directive:** `v-human-date` custom directive formatting raw ISO timestamps into localized dates.
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3.4, Lucide React, shadcn/ui design patterns
+- **Vue.js Module (Isolated):** Vue 3.5 (Mounted into React container for Practical 7 custom directives)
 - **Bootstrap Module (Isolated):** Bootstrap 5.3 (CDN + Local npm package for Practical 5 isolation)
 - **Browser APIs:** Geolocation (`navigator.geolocation`), Local Storage (`localStorage`), Native HTML5 Drag and Drop (`draggable`, `dragstart`, `dragover`, `drop`, `dragend`)
 - **Backend:** Node.js (v24.x), Express.js 4, CORS
-- **Storage Layer (Phases 1-6):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
+- **Storage Layer (Phases 1-7):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
 ---
@@ -68,7 +67,8 @@ CampusHub/
 │   ├── practical-3.md            # Practical 3 documentation & verification
 │   ├── practical-4.md            # Practical 4 documentation & verification
 │   ├── practical-5.md            # Practical 5 documentation & verification
-│   └── practical-6.md            # Practical 6 documentation & verification
+│   ├── practical-6.md            # Practical 6 documentation & verification
+│   └── practical-7.md            # Practical 7 documentation & verification
 │
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
@@ -155,6 +155,7 @@ npm run dev:frontend
 | **Practical 5 (II)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Offline/Local package bundling (`bootstrap@5.3.8`) | Completed |
 | **Practical 5 (III)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Student Registration form with validation & summary | Completed |
 | **Practical 6** | `frontend/src/pages/TailwindDemoPage.jsx` | Tailwind CSS utility-first tokens, responsive grid, flexbox, states & components | Completed |
+| **Practical 7** | `frontend/src/pages/VueDemoPage.jsx` | Vue.js custom directives (uppercase on click, human date) & dynamic course list | Completed |
 
 ---
 
@@ -162,4 +163,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 6 scoped.
+- Strictly Phase 7 scoped.

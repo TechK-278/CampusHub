@@ -9,6 +9,7 @@ import { NoticesPage } from "@/pages/NoticesPage";
 import { TasksPage } from "@/pages/TasksPage";
 import { StudentRegistrationPage } from "@/pages/StudentRegistrationPage";
 import { TailwindDemoPage } from "@/pages/TailwindDemoPage";
+import { VueDemoPage } from "@/pages/VueDemoPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { mockStudent } from "@/data/mockData";
 import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
@@ -23,6 +24,7 @@ const VALID_TABS = [
   "tasks",
   "student-registration",
   "tailwind-demo",
+  "vue-demo",
   "profile"
 ];
 
@@ -59,6 +61,8 @@ export default function App() {
         return <StudentRegistrationPage />;
       case "tailwind-demo":
         return <TailwindDemoPage />;
+      case "vue-demo":
+        return <VueDemoPage />;
       case "profile":
         return <ProfilePage />;
       default:
