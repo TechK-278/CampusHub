@@ -4,12 +4,15 @@
 
 ---
 
-## Current Status: Phase 7 (Vue.js Custom Directives)
+## Current Status: Phase 8 (Node.js + MySQL Relational Database Layer)
 
-Phase 7 implements Vue.js within an isolated practical demonstration module:
-1. **Custom Directive (Uppercase on Click):** `v-uppercase-click` converting clicked text/inputs to uppercase via Vue directive lifecycle hooks.
-2. **Dynamic List & Reactivity:** Reactive academic course catalog supporting dynamic additions, removals, and computed credit calculations.
-3. **Human-Readable Date Directive:** `v-human-date` custom directive formatting raw ISO timestamps into localized dates.
+Phase 8 introduces MySQL as the primary relational database layer for CampusHub:
+1. **Database & Table Creation:** `campushub` database and `students` table with primary key, auto-increment, and unique constraints.
+2. **SQL Operations:** Direct parameterized `INSERT`, `SELECT`, `SELECT DISTINCT` (unique departments), `UPDATE`, and `DELETE`.
+3. **Database Stored Function (UDF):** Stored MySQL function `calculate_grade(score)` executed via `SELECT calculate_grade(?) AS grade`.
+4. **Demonstrations & Safety:** Controlled `DROP TABLE` educational demonstration with strict confirmation safeguards.
+5. **Connection Pooling:** `mysql2/promise` connection pool configured via environment variables (`.env`).
+6. **Student Management UI:** Full-featured React/Tailwind/shadcn academic student registry with real-time MySQL health monitoring.
 
 ---
 
@@ -19,7 +22,8 @@ Phase 7 implements Vue.js within an isolated practical demonstration module:
 - **Vue.js Module (Isolated):** Vue 3.5 (Mounted into React container for Practical 7 custom directives)
 - **Bootstrap Module (Isolated):** Bootstrap 5.3 (CDN + Local npm package for Practical 5 isolation)
 - **Browser APIs:** Geolocation (`navigator.geolocation`), Local Storage (`localStorage`), Native HTML5 Drag and Drop (`draggable`, `dragstart`, `dragover`, `drop`, `dragend`)
-- **Backend:** Node.js (v24.x), Express.js 4, CORS
+- **Backend:** Node.js (v24.x), Express.js 4, CORS, dotenv
+- **Relational Database (Phase 8):** MySQL 8.x via `mysql2/promise` connection pool
 - **Storage Layer (Phases 1-7):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
 
@@ -35,8 +39,8 @@ CampusHub/
 │   │   │   ├── ui/               # Card, Button, Badge, Avatar, Separator, Input, Dialog
 │   │   │   ├── layout/           # Header (Mobile Search), Sidebar (Drawer), PortalLayout
 │   │   │   └── dashboard/        # StatCards, Schedule, Assignments, Notices, Activity, LocationWidget
-│   │   ├── pages/                # TasksPage, DashboardPage, CoursesPage, AttendancePage, ProfilePage, etc.
-│   │   ├── services/             # taskService.js (REST API Client)
+│   │   ├── pages/                # StudentsPage, TasksPage, DashboardPage, CoursesPage, AttendancePage, ProfilePage, etc.
+│   │   ├── services/             # studentService.js (MySQL API), taskService.js (JSON API)
 │   │   ├── data/                 # Mock academic dataset (Aarav Mehta, CS2026001)
 │   │   ├── lib/                  # storage.js (Local Storage Helper), utils.js
 │   │   ├── App.jsx               # Application root with lastVisitedPage restoration
@@ -48,9 +52,21 @@ CampusHub/
 │   └── vite.config.js
 │
 ├── backend/                      # Node.js + Express backend
-│   ├── app.js                    # Express app with /api/health and /api/tasks routes
-│   ├── routes/                   # taskRoutes.js (REST Endpoints)
-│   ├── controllers/              # taskController.js (JSON CRUD Logic)
+│   ├── app.js                    # Express app with /api/health, /api/tasks, /api/students, /api/database
+│   ├── config/
+│   │   └── db.js                 # mysql2/promise connection pool & health checker
+│   ├── database/
+│   │   ├── schema.sql            # Database & students table DDL
+│   │   ├── functions.sql         # calculate_grade() MySQL stored function DDL
+│   │   ├── seed.sql              # Fictional academic seed dataset (5 students)
+│   │   └── initDb.js             # Automated database initialization runner
+│   ├── routes/
+│   │   ├── studentRoutes.js      # Student CRUD, distinct depts, UDF & drop table routes
+│   │   ├── databaseRoutes.js     # MySQL connection health route
+│   │   └── taskRoutes.js         # JSON task REST Endpoints
+│   ├── controllers/
+│   │   ├── studentController.js  # Parameterized SQL queries & business logic
+│   │   └── taskController.js     # JSON CRUD Logic
 │   ├── package.json
 │   ├── data/
 │   │   ├── demo.json             # Fictional academic JSON dataset
@@ -68,8 +84,10 @@ CampusHub/
 │   ├── practical-4.md            # Practical 4 documentation & verification
 │   ├── practical-5.md            # Practical 5 documentation & verification
 │   ├── practical-6.md            # Practical 6 documentation & verification
-│   └── practical-7.md            # Practical 7 documentation & verification
+│   ├── practical-7.md            # Practical 7 documentation & verification
+│   └── practical-8.md            # Practical 8 documentation & verification (Node.js + MySQL)
 │
+├── .env.example                  # Environment variable template for MySQL configuration
 ├── AGENTS.md                     # Mandatory Global AI Rules & Restrictions
 ├── package.json                  # Root convenience scripts
 └── README.md
@@ -79,17 +97,28 @@ CampusHub/
 
 ## 🚀 Getting Started
 
-### 1. Install Dependencies
+### 1. Configure Environment & MySQL Database
+```bash
+# 1. Copy the example environment file
+cp .env.example .env
+
+# 2. Configure DB_USER, DB_PASSWORD, DB_NAME, DB_PORT in .env
+
+# 3. Initialize MySQL database, tables, UDF, and seed data
+node backend/database/initDb.js
+```
+
+### 2. Install Dependencies
 Run from the project root:
 ```bash
-# Install backend dependencies
+# Install backend dependencies (including mysql2, dotenv)
 npm --prefix backend install
 
 # Install frontend dependencies
 npm --prefix frontend install
 ```
 
-### 2. Run Practical Demonstrations
+### 3. Run Practical Demonstrations
 ```bash
 # Practical 1: Server-Side JavaScript demo
 npm run demo:hello
@@ -104,15 +133,17 @@ npm run demo:read-json
 npm run demo:multi-json
 ```
 
-### 3. Start Backend Server
+### 4. Start Backend Server
 ```bash
 npm run start:backend
 # Server runs at: http://localhost:5000
 # Health check: http://localhost:5000/api/health
+# DB Health check: http://localhost:5000/api/database/health
+# Students API: http://localhost:5000/api/students
 # Tasks API: http://localhost:5000/api/tasks
 ```
 
-### 4. Start Frontend Development Server
+### 5. Start Frontend Development Server
 ```bash
 npm run dev:frontend
 # Application runs at: http://localhost:5173
@@ -120,7 +151,23 @@ npm run dev:frontend
 
 ---
 
-## 📋 Task REST API Reference
+## 📋 Student (MySQL) REST API Reference
+
+| Method | Endpoint | Description | Query / Body Params |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/students` | Get all students (with optional `department` / `search` filters) | `?department=...&search=...` |
+| `GET` | `/api/students/:id` | Get single student record by primary key ID | None |
+| `GET` | `/api/students/departments` | Get unique departments (`SELECT DISTINCT department`) | None |
+| `GET` | `/api/students/:id/grade` | Call MySQL Stored Function `calculate_grade(?)` | `?score=88` |
+| `POST` | `/api/students` | Insert student with validation | `{ roll_number, first_name, last_name, email, mobile, department, semester, division }` |
+| `PUT` | `/api/students/:id` | Update existing student record | `{ roll_number, first_name, last_name, email, mobile, department, semester, division }` |
+| `DELETE` | `/api/students/:id` | Delete student record | None |
+| `POST` | `/api/students/demo-drop-table` | Educational DROP TABLE demonstration (safe demo) | `{ confirm_token: "CONFIRM_DROP_DEMO_TABLE" }` |
+| `GET` | `/api/database/health` | MySQL connection pool health check | None |
+
+---
+
+## 📋 Task (JSON) REST API Reference
 
 | Method | Endpoint | Description | Request Body |
 | :--- | :--- | :--- | :--- |
@@ -156,6 +203,7 @@ npm run dev:frontend
 | **Practical 5 (III)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Student Registration form with validation & summary | Completed |
 | **Practical 6** | `frontend/src/pages/TailwindDemoPage.jsx` | Tailwind CSS utility-first tokens, responsive grid, flexbox, states & components | Completed |
 | **Practical 7** | `frontend/src/pages/VueDemoPage.jsx` | Vue.js custom directives (uppercase on click, human date) & dynamic course list | Completed |
+| **Practical 8** | `backend/database/`, `frontend/src/pages/StudentsPage.jsx` | Node.js + MySQL CRUD, SELECT DISTINCT, DROP TABLE demo, UDF (`calculate_grade`) | Completed |
 
 ---
 
@@ -163,4 +211,4 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 7 scoped.
+- Strictly Phase 8 scoped (MySQL relational database integration).

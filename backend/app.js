@@ -39,6 +39,14 @@ app.get("/api/health", (req, res) => {
 const taskRoutes = require("./routes/taskRoutes");
 app.use("/api/tasks", taskRoutes);
 
+// MySQL Student Management Routes (Practical 8)
+const studentRoutes = require("./routes/studentRoutes");
+app.use("/api/students", studentRoutes);
+
+// MySQL Database Health Routes (Practical 8)
+const databaseRoutes = require("./routes/databaseRoutes");
+app.use("/api/database", databaseRoutes);
+
 // Optional Read-only Demo Data Endpoint
 app.get("/api/demo-data", (req, res) => {
   try {

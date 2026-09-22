@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PortalLayout } from "@/components/layout/PortalLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
+import { StudentsPage } from "@/pages/StudentsPage";
 import { CoursesPage } from "@/pages/CoursesPage";
 import { AttendancePage } from "@/pages/AttendancePage";
 import { AssignmentsPage } from "@/pages/AssignmentsPage";
@@ -16,6 +17,7 @@ import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
 
 const VALID_TABS = [
   "dashboard",
+  "students",
   "courses",
   "attendance",
   "assignments",
@@ -45,6 +47,8 @@ export default function App() {
     switch (activeTab) {
       case "dashboard":
         return <DashboardPage onNavigate={handleSelectTab} />;
+      case "students":
+        return <StudentsPage />;
       case "courses":
         return <CoursesPage />;
       case "attendance":

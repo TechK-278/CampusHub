@@ -11,6 +11,7 @@ import {
   UserPlus,
   Palette,
   Code2,
+  Users,
   GraduationCap,
   Sparkles,
   Server
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 
 export const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "students", label: "Students", icon: Users, badge: "MySQL" },
   { id: "courses", label: "Courses", icon: BookOpen },
   { id: "attendance", label: "Attendance", icon: CalendarCheck2 },
   { id: "assignments", label: "Assignments", icon: FileText, badge: "3" },
