@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -29,8 +29,6 @@ const TYPE_BADGE = {
 };
 
 export function WeeklyTimetable({ timetable, division }) {
-  const [selectedDay, setSelectedDay] = useState(null);
-
   // Build lookup: day+period → entry
   const grid = useMemo(() => {
     const map = {};
@@ -41,39 +39,10 @@ export function WeeklyTimetable({ timetable, division }) {
     return map;
   }, [timetable]);
 
-  const visibleDays = selectedDay ? [selectedDay] : DAYS;
+  const visibleDays = DAYS;
 
   return (
     <div className="space-y-4">
-      {/* Day filter pills — mobile friendly */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setSelectedDay(null)}
-          className={cn(
-            "rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
-            !selectedDay
-              ? "bg-blue-600 text-white"
-              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-          )}
-        >
-          All Days
-        </button>
-        {DAYS.map((day) => (
-          <button
-            key={day}
-            onClick={() => setSelectedDay(day)}
-            className={cn(
-              "rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
-              selectedDay === day
-                ? "bg-blue-600 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            )}
-          >
-            {day.slice(0, 3)}
-          </button>
-        ))}
-      </div>
-
       {/* Desktop: Full grid layout (hidden below lg) */}
       <div className="hidden lg:block overflow-x-auto">
         <div
