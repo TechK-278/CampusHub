@@ -36,9 +36,6 @@ export function AcademicCalendarPage() {
           </div>
           <p className="text-xs text-slate-500 mt-1">
             Semester 5, 2025–2026
-            <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">
-              Practical 6 · Tailwind CSS
-            </span>
           </p>
         </div>
 

@@ -266,55 +266,14 @@ export function StudentsPage() {
   return (
     <div className="space-y-6">
       
-      {/* 1. Module Header Banner with DB Health Indicator */}
-      <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-5 sm:flex-row sm:items-center sm:justify-between shadow-2xs">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 border border-blue-200">
-              Practical 8
-            </span>
-            <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700 border border-slate-200">
-              Node.js + MySQL 8.x
-            </span>
-            <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 border border-emerald-200">
-              Direct SQL (mysql2/promise)
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-            Student Academic Records & MySQL Relational Engine
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-            Demonstrates real MySQL database integration using Node.js & <code>mysql2/promise</code> connection pool, full CRUD operations, <code>SELECT DISTINCT</code>, parameterized queries, and MySQL stored functions.
-          </p>
-        </div>
-
-        {/* Database Live Status Card */}
-        <div className="shrink-0 pt-2 sm:pt-0">
-          <div className={`flex items-center gap-2 rounded-md border p-2.5 text-xs ${
-            dbStatus.connected
-              ? "bg-emerald-50/70 border-emerald-200 text-emerald-800"
-              : "bg-amber-50/70 border-amber-200 text-amber-800"
-          }`}>
-            <Database className="h-4 w-4 shrink-0" />
-            <div>
-              <div className="flex items-center gap-1.5 font-semibold">
-                <span className={`h-2 w-2 rounded-full ${dbStatus.connected ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`}></span>
-                <span>{dbStatus.connected ? `MySQL Connected` : `DB Disconnected`}</span>
-              </div>
-              <span className="text-[10px] text-slate-500 block">
-                {dbStatus.connected ? `DB: ${dbStatus.database} (v${dbStatus.version || "8.0"})` : `Check .env credentials`}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={checkDb}
-              className="ml-1 rounded p-1 text-slate-400 hover:text-slate-700 transition-colors"
-              title="Refresh Database Status"
-            >
-              <RefreshCw className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
+      {/* 1. Module Header */}
+      <div className="flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-5 shadow-2xs">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+          Student Academic Records
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+          Manage student directory records, department allocations, academic grading calculations, and database maintenance.
+        </p>
       </div>
 
       {/* 2. Success Banner */}
@@ -334,12 +293,12 @@ export function StudentsPage() {
         </div>
       )}
 
-      {/* 3. Navigation Tabs for Practical 8 Sections */}
+      {/* 3. Navigation Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2">
         {[
-          { id: "directory", label: "1. Student Directory (CRUD & DISTINCT)", icon: Users },
-          { id: "udf", label: "2. User-Defined Function (calculate_grade)", icon: Calculator },
-          { id: "drop-table", label: "3. DROP TABLE Demonstration", icon: ShieldAlert },
+          { id: "directory", label: "Student Directory", icon: Users },
+          { id: "udf", label: "Grade Calculator", icon: Calculator },
+          { id: "drop-table", label: "Database Maintenance", icon: ShieldAlert },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -361,7 +320,7 @@ export function StudentsPage() {
       </div>
 
       {/* ============================================================
-       * SECTION 1: STUDENT DIRECTORY (SELECT, INSERT, UPDATE, DELETE, DISTINCT)
+       * SECTION 1: STUDENT DIRECTORY
        * ============================================================ */}
       {activeTab === "directory" && (
         <Card className="border-slate-200 shadow-2xs">
@@ -373,7 +332,7 @@ export function StudentsPage() {
                   Academic Student Management
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-500 mt-0.5">
-                  Direct MySQL relational records stored in table <code>campushub.students</code>.
+                  Manage and view all registered student records.
                 </CardDescription>
               </div>
               <Button
@@ -382,7 +341,7 @@ export function StudentsPage() {
                 className="bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center gap-1.5 self-start sm:self-auto shadow-2xs"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>Add Student (INSERT)</span>
+                <span>Add Student</span>
               </Button>
             </div>
           </CardHeader>
@@ -407,7 +366,7 @@ export function StudentsPage() {
               <div className="flex items-center gap-2">
                 <span className="text-xs text-slate-500 font-medium shrink-0 flex items-center gap-1">
                   <Filter className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Dept (DISTINCT):</span>
+                  <span>Department:</span>
                 </span>
                 <select
                   value={selectedDept}
@@ -553,7 +512,7 @@ export function StudentsPage() {
               {/* Interactive UDF Tester */}
               <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-4 space-y-4">
                 <span className="text-xs font-semibold text-slate-800 block">
-                  Execute Stored Function in MySQL
+                  Academic Grade Calculation
                 </span>
 
                 <div className="space-y-2">
@@ -588,7 +547,7 @@ export function StudentsPage() {
                   disabled={udfLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs shadow-2xs"
                 >
-                  {udfLoading ? "Querying MySQL Function..." : `Run: SELECT calculate_grade(${udfScore})`}
+                  {udfLoading ? "Calculating Grade..." : `Calculate Grade (${udfScore} pts)`}
                 </Button>
               </div>
 
@@ -596,7 +555,7 @@ export function StudentsPage() {
               <div className="rounded-lg border border-slate-200 bg-white p-4 space-y-3 shadow-2xs flex flex-col justify-between">
                 <div>
                   <span className="text-xs font-semibold text-slate-800 block mb-2">
-                    MySQL Function Output:
+                    Grading Result:
                   </span>
 
                   {udfResult ? (
@@ -612,13 +571,13 @@ export function StudentsPage() {
                     </div>
                   ) : (
                     <div className="rounded border border-dashed border-slate-300 p-6 text-center text-xs text-slate-400">
-                      Click "Run SELECT calculate_grade({udfScore})" to invoke the stored function.
+                      Click "Calculate Grade" to execute grade calculation.
                     </div>
                   )}
                 </div>
 
                 <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
-                  * Function executes inside MySQL engine using <code>DETERMINISTIC</code> stored routine.
+                  * Evaluated using database stored function (<code>calculate_grade</code>).
                 </div>
               </div>
 
@@ -658,10 +617,10 @@ END;
           <CardHeader className="pb-3 border-b border-slate-100">
             <CardTitle className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
               <ShieldAlert className="h-4 w-4 text-rose-600" />
-              Requirement 8: DROP TABLE Demonstration (Controlled & Safe)
+              Database Maintenance (Demo Table Cleanup)
             </CardTitle>
             <CardDescription className="text-xs text-slate-500">
-              Demonstrates <code>DROP TABLE IF EXISTS</code> on a temporary demo table (<code>campushub_temp_demo</code>) with explicit safety confirmation to protect production data.
+              Performs isolated schema cleanup testing on temporary table (<code>campushub_temp_demo</code>).
             </CardDescription>
           </CardHeader>
 
@@ -670,10 +629,10 @@ END;
             <div className="rounded-md border border-amber-200 bg-amber-50/70 p-4 text-xs text-amber-900 space-y-2">
               <div className="flex items-center gap-2 font-semibold text-amber-800">
                 <AlertTriangle className="h-4 w-4 text-amber-600" />
-                <span>Educational Safety Notice</span>
+                <span>Safety Notice</span>
               </div>
               <p>
-                In accordance with <code>AGENTS.md</code> and Practical 8 guidelines, destructive SQL statements such as <code>DROP TABLE</code> must never delete the active student table during routine operations. This demonstration operates on a safe, isolated table created and dropped on demand.
+                Destructive SQL statements must never delete the active student table during routine operations. This maintenance action operates solely on a safe, isolated table created and dropped on demand.
               </p>
             </div>
 
@@ -687,7 +646,7 @@ END;
                   className="rounded border-slate-300 text-blue-600 focus:ring-blue-600"
                 />
                 <label htmlFor="confirmDrop" className="text-xs font-medium text-slate-700 cursor-pointer">
-                  I understand this is an educational demonstration of <code>DROP TABLE IF EXISTS</code>.
+                  I confirm execution of table cleanup on temporary table.
                 </label>
               </div>
 
@@ -696,7 +655,7 @@ END;
                 disabled={!confirmDropCheck || dropDemoLoading}
                 className="bg-rose-600 hover:bg-rose-700 text-white text-xs shadow-2xs"
               >
-                {dropDemoLoading ? "Executing SQL..." : "Execute: DROP TABLE IF EXISTS campushub_temp_demo"}
+                {dropDemoLoading ? "Executing Cleanup..." : "Execute Cleanup on Demo Table"}
               </Button>
 
               {dropDemoLog && (

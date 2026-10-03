@@ -167,7 +167,6 @@ export const LibraryApp = {
           </div>
           <p class="text-xs text-slate-500 mt-1">
             Book catalogue and reservations
-            <span class="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">Practical 7 · Vue Directives</span>
           </p>
         </div>
       </div>

@@ -12,23 +12,22 @@ import {
   CalendarDays,
   BookMarked,
   Users,
-  GraduationCap,
-  Server
+  GraduationCap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "students", label: "Students", icon: Users, badge: "MySQL" },
+  { id: "students", label: "Students", icon: Users },
   { id: "courses", label: "Courses", icon: BookOpen },
   { id: "attendance", label: "Attendance", icon: CalendarCheck2 },
   { id: "assignments", label: "Assignments", icon: FileText, badge: "3" },
   { id: "results", label: "Results", icon: Award },
   { id: "notices", label: "Notices", icon: BellRing, badge: "New" },
   { id: "tasks", label: "Tasks", icon: CheckSquare },
-  { id: "student-registration", label: "Admissions", icon: ClipboardList, badge: "P5" },
-  { id: "tailwind-demo", label: "Academic Calendar", icon: CalendarDays, badge: "P6" },
-  { id: "vue-demo", label: "Library", icon: BookMarked, badge: "P7" },
+  { id: "student-registration", label: "Admissions", icon: ClipboardList },
+  { id: "tailwind-demo", label: "Academic Calendar", icon: CalendarDays },
+  { id: "vue-demo", label: "Library", icon: BookMarked },
   { id: "profile", label: "Profile", icon: UserCircle },
 ];
 
@@ -90,24 +89,6 @@ export function Sidebar({ activeTab, onSelectTab, isMobile, onCloseMobile }) {
             </button>
           );
         })}
-      </div>
-
-      {/* Footer System Box */}
-      <div className="p-4 border-t border-slate-200 bg-slate-50/75">
-        <div className="rounded-md border border-slate-200 bg-white p-3 shadow-2xs">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-slate-700 flex items-center gap-1.5">
-              <Server className="h-3 w-3 text-emerald-500" />
-              Phase 1 Shell
-            </span>
-            <span className="inline-flex items-center rounded-full bg-emerald-50 px-1.5 py-0.2 text-[10px] font-medium text-emerald-700 border border-emerald-200">
-              Active
-            </span>
-          </div>
-          <p className="mt-1 text-[10px] text-slate-500">
-            Node.js + Express API Connected
-          </p>
-        </div>
       </div>
     </aside>
   );

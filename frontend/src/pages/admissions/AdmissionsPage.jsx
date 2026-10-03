@@ -99,9 +99,6 @@ export function AdmissionsPage() {
           <h4 className="fw-bold text-dark mb-1">Student Admissions</h4>
           <p className="text-muted small mb-0">
             New student enrollment and registration
-            <span className="badge bg-secondary bg-opacity-25 text-secondary ms-2" style={{ fontSize: "0.7rem" }}>
-              Practical 5 · Bootstrap
-            </span>
           </p>
         </div>
 
