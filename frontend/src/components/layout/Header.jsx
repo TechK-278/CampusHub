@@ -408,7 +408,7 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
             </div>
           </div>
 
-          <DialogFooter className="mt-4 pt-3 border-t border-slate-100 flex justify-end">
+          <DialogFooter>
             <Button
               size="sm"
               onClick={() => setShowPreferencesModal(false)}
@@ -433,7 +433,7 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
             </DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"

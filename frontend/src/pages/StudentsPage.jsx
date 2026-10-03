@@ -679,9 +679,9 @@ END;
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
         <DialogContent onClose={() => setIsAddModalOpen(false)}>
           <DialogHeader>
-            <DialogTitle>Insert Student Record (MySQL INSERT)</DialogTitle>
+            <DialogTitle>Add Student Record</DialogTitle>
             <DialogDescription>
-              Enter academic credentials to insert a new record into <code>campushub.students</code>.
+              Enter academic details to add a new student record.
             </DialogDescription>
           </DialogHeader>
 
@@ -823,9 +823,9 @@ END;
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <DialogContent onClose={() => setIsEditModalOpen(false)}>
           <DialogHeader>
-            <DialogTitle>Update Student Record (MySQL UPDATE)</DialogTitle>
+            <DialogTitle>Edit Student Record</DialogTitle>
             <DialogDescription>
-              Modify academic details for ID #{studentToEdit?.id} ({studentToEdit?.roll_number}).
+              Modify academic details for {studentToEdit?.first_name} {studentToEdit?.last_name} ({studentToEdit?.roll_number}).
             </DialogDescription>
           </DialogHeader>
 

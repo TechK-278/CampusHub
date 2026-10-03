@@ -1,22 +1,24 @@
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function Dialog({ open, onOpenChange, children }) {
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"
-        onClick={() => onOpenChange(false)}
+        onClick={() => onOpenChange?.(false)}
       />
       {/* Dialog Body */}
-      <div className="relative z-50 w-full max-w-lg p-4 mx-4">
+      <div className="relative z-50 w-full max-w-lg mx-auto">
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
