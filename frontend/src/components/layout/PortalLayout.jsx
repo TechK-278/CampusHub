@@ -51,6 +51,7 @@ export function PortalLayout({ children, student, activeTab, onSelectTab }) {
         <Header
           student={student}
           onToggleMobileMenu={() => setMobileMenuOpen(true)}
+          onSelectTab={onSelectTab}
         />
         {/* Practical 3: Width & Max-width constrained main container */}
         <main className="flex-1 px-3 py-4 sm:px-6 sm:py-6 md:px-8 max-w-7xl w-full mx-auto">
