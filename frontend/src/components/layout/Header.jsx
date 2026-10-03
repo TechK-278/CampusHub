@@ -3,7 +3,6 @@ import {
   Search, 
   Bell, 
   Menu, 
-  GraduationCap, 
   ChevronDown,
   User,
   LogOut,
@@ -172,9 +171,11 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
             </Button>
 
             <div className="flex items-center gap-2 lg:hidden">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white font-bold shrink-0">
-                <GraduationCap className="h-5 w-5" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="CampusHub Logo"
+                className="h-8 w-8 rounded-md object-contain shrink-0 shadow-xs"
+              />
               <div className="hidden min-[380px]:block">
                 <h1 className="text-sm font-bold tracking-tight text-slate-900 leading-tight">CampusHub</h1>
                 <p className="text-[10px] text-slate-500 font-medium leading-none">College Portal</p>

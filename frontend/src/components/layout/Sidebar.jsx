@@ -11,8 +11,7 @@ import {
   ClipboardList,
   CalendarDays,
   BookMarked,
-  Users,
-  GraduationCap
+  Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -38,10 +37,12 @@ export function Sidebar({ activeTab, onSelectTab, isMobile, onCloseMobile }) {
       isMobile ? "w-72 h-full" : "w-64 shrink-0 hidden lg:flex min-h-screen"
     )}>
       {/* Brand Header */}
-      <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm">
-          <GraduationCap className="h-5 w-5" />
-        </div>
+      <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-5">
+        <img
+          src="/logo.png"
+          alt="CampusHub Logo"
+          className="h-9 w-9 rounded-lg object-contain shadow-xs"
+        />
         <div>
           <div className="flex items-center gap-1.5">
             <span className="text-base font-bold tracking-tight text-slate-900 leading-none">CampusHub</span>
