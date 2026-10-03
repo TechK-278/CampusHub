@@ -3,6 +3,7 @@ import {
   Search, 
   Bell, 
   Menu, 
+  GraduationCap, 
   ChevronDown,
   User,
   LogOut,
@@ -174,7 +175,7 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
               <img
                 src="/logo.png"
                 alt="CampusHub Logo"
-                className="h-8 w-8 rounded-md object-contain shrink-0 shadow-xs"
+                className="h-8 w-8 rounded-md object-contain shrink-0 border border-slate-100"
               />
               <div className="hidden min-[380px]:block">
                 <h1 className="text-sm font-bold tracking-tight text-slate-900 leading-tight">CampusHub</h1>
