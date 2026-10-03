@@ -245,3 +245,67 @@ export const mockCourses = [
     syllabusProgress: 45,
   },
 ];
+
+/**
+ * Academic Calendar Mock Data — Practical 6 (Tailwind CSS Module)
+ */
+
+export const mockTimetable = [
+  // Monday
+  { day: "Monday", period: 1, time: "09:15–10:15", courseCode: "CS501", courseName: "Full Stack Web Development", room: "Lab 302", type: "Lab", faculty: "Prof. Sanjay Patel" },
+  { day: "Monday", period: 2, time: "10:30–11:30", courseCode: "CS502", courseName: "Database Management Systems", room: "Room 204", type: "Lecture", faculty: "Dr. Ananya Roy" },
+  { day: "Monday", period: 3, time: "11:45–12:45", courseCode: "CS503", courseName: "Computer Networks", room: "Room 105", type: "Lecture", faculty: "Prof. Vikram Joshi" },
+  { day: "Monday", period: 5, time: "14:00–16:00", courseCode: "CS504", courseName: "Operating Systems Lab", room: "Lab 101", type: "Lab", faculty: "Dr. Neha Verma" },
+  // Tuesday
+  { day: "Tuesday", period: 1, time: "09:15–10:15", courseCode: "CS505", courseName: "Design & Analysis of Algorithms", room: "Room 301", type: "Lecture", faculty: "Prof. Harish Nair" },
+  { day: "Tuesday", period: 2, time: "10:30–11:30", courseCode: "CS501", courseName: "Full Stack Web Development", room: "Room 204", type: "Lecture", faculty: "Prof. Sanjay Patel" },
+  { day: "Tuesday", period: 3, time: "11:45–12:45", courseCode: "CS504", courseName: "Operating Systems", room: "Room 105", type: "Lecture", faculty: "Dr. Neha Verma" },
+  // Wednesday
+  { day: "Wednesday", period: 1, time: "09:15–10:15", courseCode: "CS502", courseName: "Database Management Systems", room: "Lab 302", type: "Lab", faculty: "Dr. Ananya Roy" },
+  { day: "Wednesday", period: 2, time: "10:30–11:30", courseCode: "CS501", courseName: "Full Stack Web Development", room: "Room 204", type: "Lecture", faculty: "Prof. Sanjay Patel" },
+  { day: "Wednesday", period: 3, time: "11:45–12:45", courseCode: "CS505", courseName: "Design & Analysis of Algorithms", room: "Room 301", type: "Lecture", faculty: "Prof. Harish Nair" },
+  // Thursday
+  { day: "Thursday", period: 1, time: "09:15–10:15", courseCode: "CS503", courseName: "Computer Networks", room: "Lab 302", type: "Lab", faculty: "Prof. Vikram Joshi" },
+  { day: "Thursday", period: 2, time: "10:30–11:30", courseCode: "CS502", courseName: "Database Management Systems", room: "Room 204", type: "Lecture", faculty: "Dr. Ananya Roy" },
+  { day: "Thursday", period: 3, time: "11:45–12:45", courseCode: "CS505", courseName: "Design & Analysis of Algorithms", room: "Room 105", type: "Lecture", faculty: "Prof. Harish Nair" },
+  // Friday
+  { day: "Friday", period: 1, time: "09:15–10:15", courseCode: "CS504", courseName: "Operating Systems", room: "Room 301", type: "Lecture", faculty: "Dr. Neha Verma" },
+  { day: "Friday", period: 2, time: "10:30–11:30", courseCode: "CS503", courseName: "Computer Networks", room: "Room 204", type: "Lecture", faculty: "Prof. Vikram Joshi" },
+  { day: "Friday", period: 3, time: "11:45–12:45", courseCode: "CS501", courseName: "Full Stack Web Development", room: "Lab 302", type: "Lab", faculty: "Prof. Sanjay Patel" },
+  // Saturday
+  { day: "Saturday", period: 1, time: "09:15–10:15", courseCode: "CS505", courseName: "Design & Analysis of Algorithms", room: "Room 301", type: "Tutorial", faculty: "Prof. Harish Nair" },
+  { day: "Saturday", period: 2, time: "10:30–11:30", courseCode: "CS503", courseName: "Computer Networks", room: "Room 204", type: "Tutorial", faculty: "Prof. Vikram Joshi" },
+];
+
+export const mockExamSchedule = [
+  { courseCode: "CS501", courseName: "Full Stack Web Development", date: "2026-10-10", time: "09:30 AM – 11:30 AM", room: "Hall A, Exam Block", type: "Mid-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS502", courseName: "Database Management Systems", date: "2026-10-12", time: "09:30 AM – 11:30 AM", room: "Hall B, Exam Block", type: "Mid-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS503", courseName: "Computer Networks", date: "2026-10-14", time: "02:00 PM – 04:00 PM", room: "Hall A, Exam Block", type: "Mid-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS504", courseName: "Operating Systems", date: "2026-10-16", time: "09:30 AM – 11:30 AM", room: "Hall C, Exam Block", type: "Mid-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS505", courseName: "Design & Analysis of Algorithms", date: "2026-10-18", time: "02:00 PM – 04:00 PM", room: "Hall B, Exam Block", type: "Mid-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS501", courseName: "Full Stack Web Development", date: "2026-12-05", time: "09:30 AM – 12:30 PM", room: "Hall A, Exam Block", type: "End-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS502", courseName: "Database Management Systems", date: "2026-12-08", time: "09:30 AM – 12:30 PM", room: "Hall B, Exam Block", type: "End-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "CS503", courseName: "Computer Networks", date: "2026-12-10", time: "02:00 PM – 05:00 PM", room: "Hall A, Exam Block", type: "End-Semester", department: "Computer Science & Engineering", semester: 5 },
+  { courseCode: "IT501", courseName: "Software Engineering", date: "2026-10-11", time: "09:30 AM – 11:30 AM", room: "Hall D, Exam Block", type: "Mid-Semester", department: "Information Technology", semester: 5 },
+  { courseCode: "EC501", courseName: "VLSI Design", date: "2026-10-13", time: "02:00 PM – 04:00 PM", room: "Hall C, Exam Block", type: "Mid-Semester", department: "Electronics & Communication", semester: 5 },
+];
+
+export const mockHolidays = [
+  { date: "2026-08-15", name: "Independence Day", type: "holiday", description: "National holiday — all university operations suspended" },
+  { date: "2026-09-05", name: "Teacher's Day", type: "event", description: "Faculty felicitation ceremony in Central Auditorium" },
+  { date: "2026-09-17", name: "Vishwakarma Jayanti", type: "holiday", description: "Engineering community celebration — no classes" },
+  { date: "2026-10-02", name: "Gandhi Jayanti", type: "holiday", description: "National holiday" },
+  { date: "2026-10-09", name: "Mid-Semester Exam Prep Day", type: "exam-break", description: "No lectures — self-study and revision day" },
+  { date: "2026-10-10", name: "Mid-Semester Examinations Begin", type: "exam-break", description: "Exam period begins — regular lectures suspended" },
+  { date: "2026-10-19", name: "Mid-Semester Examinations End", type: "exam-break", description: "Last day of mid-semester examinations" },
+  { date: "2026-10-20", name: "Dussehra", type: "holiday", description: "Festival holiday" },
+  { date: "2026-10-21", name: "Dussehra Vacation", type: "holiday", description: "Extended holiday" },
+  { date: "2026-11-01", name: "Campus Tech Symposium", type: "event", description: "Annual technology symposium and project exhibition" },
+  { date: "2026-11-14", name: "Diwali Vacation Begins", type: "holiday", description: "Diwali break — campus closed" },
+  { date: "2026-11-18", name: "Diwali Vacation Ends", type: "holiday", description: "Classes resume" },
+  { date: "2026-11-28", name: "Placement Drive — Day 1", type: "event", description: "On-campus placement interviews — select classrooms unavailable" },
+  { date: "2026-12-01", name: "End-Semester Exam Prep Day", type: "exam-break", description: "No lectures — revision period" },
+  { date: "2026-12-05", name: "End-Semester Examinations Begin", type: "exam-break", description: "Final examination period — all lectures suspended" },
+  { date: "2026-12-20", name: "End-Semester Examinations End", type: "exam-break", description: "Last day of final examinations" },
+  { date: "2026-12-25", name: "Christmas", type: "holiday", description: "Holiday — university closed" },
+];

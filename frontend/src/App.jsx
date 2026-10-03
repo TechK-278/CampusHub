@@ -8,9 +8,9 @@ import { AssignmentsPage } from "@/pages/AssignmentsPage";
 import { ResultsPage } from "@/pages/ResultsPage";
 import { NoticesPage } from "@/pages/NoticesPage";
 import { TasksPage } from "@/pages/TasksPage";
-import { StudentRegistrationPage } from "@/pages/StudentRegistrationPage";
-import { TailwindDemoPage } from "@/pages/TailwindDemoPage";
-import { VueDemoPage } from "@/pages/VueDemoPage";
+import { AdmissionsPage } from "@/pages/admissions/AdmissionsPage";
+import { AcademicCalendarPage } from "@/pages/calendar/AcademicCalendarPage";
+import { LibraryPage } from "@/pages/library/LibraryPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { mockStudent } from "@/data/mockData";
 import { getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
@@ -62,11 +62,11 @@ export default function App() {
       case "tasks":
         return <TasksPage />;
       case "student-registration":
-        return <StudentRegistrationPage />;
+        return <AdmissionsPage />;
       case "tailwind-demo":
-        return <TailwindDemoPage />;
+        return <AcademicCalendarPage />;
       case "vue-demo":
-        return <VueDemoPage />;
+        return <LibraryPage />;
       case "profile":
         return <ProfilePage />;
       default:

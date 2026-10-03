@@ -13,6 +13,7 @@ export const STORAGE_KEYS = {
   TASK_ORDER: `${STORAGE_PREFIX}taskOrder`,
   TASK_FILTER: `${STORAGE_PREFIX}taskFilter`,
   DISMISSED_BANNER: `${STORAGE_PREFIX}dismissedBanner`,
+  ADMISSION_DRAFT: `${STORAGE_PREFIX}admissionDraft`,
 };
 
 /**

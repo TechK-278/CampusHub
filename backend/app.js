@@ -47,6 +47,10 @@ app.use("/api/students", studentRoutes);
 const databaseRoutes = require("./routes/databaseRoutes");
 app.use("/api/database", databaseRoutes);
 
+// Library Catalogue Routes (Practical 7)
+const libraryRoutes = require("./routes/libraryRoutes");
+app.use("/api/library", libraryRoutes);
+
 // Optional Read-only Demo Data Endpoint
 app.get("/api/demo-data", (req, res) => {
   try {

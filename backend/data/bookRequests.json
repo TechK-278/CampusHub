@@ -1,0 +1,7 @@
+{
+  "requests": [
+    { "id": 1, "bookId": 1, "bookTitle": "Introduction to Algorithms", "studentId": "CS2026001", "studentName": "Aarav Mehta", "status": "approved", "requestDate": "2026-09-10T10:30:00Z", "dueDate": "2026-10-10", "notes": "" },
+    { "id": 2, "bookId": 4, "bookTitle": "Operating System Concepts", "studentId": "CS2026001", "studentName": "Aarav Mehta", "status": "pending", "requestDate": "2026-09-20T14:00:00Z", "dueDate": null, "notes": "All copies currently issued" },
+    { "id": 3, "bookId": 2, "bookTitle": "Database System Concepts", "studentId": "CS2026002", "studentName": "Diya Shah", "status": "approved", "requestDate": "2026-09-15T09:00:00Z", "dueDate": "2026-10-15", "notes": "" }
+  ]
+}

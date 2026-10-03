@@ -8,12 +8,11 @@ import {
   BellRing,
   CheckSquare,
   UserCircle,
-  UserPlus,
-  Palette,
-  Code2,
+  ClipboardList,
+  CalendarDays,
+  BookMarked,
   Users,
   GraduationCap,
-  Sparkles,
   Server
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,9 +26,9 @@ export const navigationItems = [
   { id: "results", label: "Results", icon: Award },
   { id: "notices", label: "Notices", icon: BellRing, badge: "New" },
   { id: "tasks", label: "Tasks", icon: CheckSquare },
-  { id: "student-registration", label: "Registration", icon: UserPlus, badge: "Bootstrap" },
-  { id: "tailwind-demo", label: "Tailwind CSS", icon: Palette, badge: "P6" },
-  { id: "vue-demo", label: "Vue.js", icon: Code2, badge: "P7" },
+  { id: "student-registration", label: "Admissions", icon: ClipboardList, badge: "P5" },
+  { id: "tailwind-demo", label: "Academic Calendar", icon: CalendarDays, badge: "P6" },
+  { id: "vue-demo", label: "Library", icon: BookMarked, badge: "P7" },
   { id: "profile", label: "Profile", icon: UserCircle },
 ];
 
