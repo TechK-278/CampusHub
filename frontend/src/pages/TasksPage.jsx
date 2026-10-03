@@ -349,10 +349,7 @@ export function TasksPage() {
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-fluid-title text-slate-900">My Tasks</h1>
-            <Badge variant="secondary" className="text-xs">JSON Storage</Badge>
-            <Badge variant="outline" className="text-[10px] text-blue-700 bg-blue-50 border-blue-200">
-              Drag & Drop Enabled
-            </Badge>
+            <Badge variant="secondary" className="text-xs">Semester 5</Badge>
           </div>
           <p className="text-fluid-subtitle text-slate-500 mt-0.5">
             Manage your academic tasks, assignments, and practical deadlines. Drag cards or use arrows to reorder.
@@ -428,7 +425,7 @@ export function TasksPage() {
             <Layers className="h-4 w-4 text-slate-400" />
           </div>
           <div className="text-2xl font-bold text-slate-900 mt-1">{totalCount}</div>
-          <div className="text-[11px] text-slate-500 mt-0.5 truncate">Stored in backend/data/tasks.json</div>
+          <div className="text-[11px] text-slate-500 mt-0.5 truncate">Across enrolled courses</div>
         </Card>
 
         <Card className="p-4 border-slate-200 w-full">

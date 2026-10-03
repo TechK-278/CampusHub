@@ -94,34 +94,11 @@ export function AdmissionsPage() {
   return (
     <div className="campushub-bootstrap-scope">
       {/* Page Header */}
-      <div className="d-flex justify-content-between align-items-start flex-wrap mb-4">
-        <div>
-          <h4 className="fw-bold text-dark mb-1">Student Admissions</h4>
-          <p className="text-muted small mb-0">
-            New student enrollment and registration
-          </p>
-        </div>
-
-        {/* Bootstrap Source Toggle */}
-        <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
-          <span className="text-muted small">Bootstrap Source:</span>
-          <div className="btn-group btn-group-sm" role="group">
-            <button
-              type="button"
-              className={`btn ${bootstrapMode === "local" ? "btn-primary" : "btn-outline-secondary"}`}
-              onClick={() => setBootstrapMode("local")}
-            >
-              Local (npm)
-            </button>
-            <button
-              type="button"
-              className={`btn ${bootstrapMode === "cdn" ? "btn-primary" : "btn-outline-secondary"}`}
-              onClick={() => setBootstrapMode("cdn")}
-            >
-              CDN
-            </button>
-          </div>
-        </div>
+      <div className="mb-4">
+        <h4 className="fw-bold text-dark mb-1">Student Admissions</h4>
+        <p className="text-muted small mb-0">
+          New student enrollment and registration
+        </p>
       </div>
 
       {/* Alerts */}
