@@ -101,33 +101,48 @@ frontend/src/
 │   └── storage.js             <- localStorage helpers + STORAGE_KEYS
 ├── services/
 │   ├── studentService.js      <- fetch() calls to /api/students
-│   └── taskService.js         <- fetch() calls to /api/tasks
+│   ├── taskService.js         <- fetch() calls to /api/tasks
+│   ├── admissionService.js    <- fetch() calls to /api/students (admission workflow)
+│   └── libraryService.js      <- fetch() calls to /api/library/*
 ├── components/
 │   ├── layout/
 │   │   ├── PortalLayout.jsx   <- Root layout: Sidebar + Header + main
 │   │   ├── Sidebar.jsx        <- Desktop sidebar + mobile drawer nav
 │   │   └── Header.jsx         <- Top header bar, mobile menu toggle
 │   ├── dashboard/             <- Dashboard widget components
-│   │   ├── StatCards.jsx
-│   │   ├── ScheduleWidget.jsx
-│   │   ├── AssignmentsWidget.jsx
-│   │   ├── NoticesWidget.jsx
-│   │   ├── ActivityWidget.jsx
-│   │   └── LocationWidget.jsx
 │   └── ui/                    <- shadcn/ui style primitive components
 └── pages/
     ├── DashboardPage.jsx       <- Main student dashboard
     ├── StudentsPage.jsx        <- MySQL CRUD (Practical 8) — large file ~44KB
-    ├── StudentRegistrationPage.jsx  <- Bootstrap form demo (Practical 5) ~43KB
+    ├── admissions/             <- Student Admissions module (Practical 5, Bootstrap)
+    │   ├── AdmissionsPage.jsx  <- Page shell, Bootstrap CSS lifecycle
+    │   ├── AdmissionForm.jsx   <- Multi-section form with validation + draft save
+    │   ├── ConfirmSubmitModal.jsx <- Bootstrap modal for submission review
+    │   ├── RecentEnrollments.jsx  <- Bootstrap table of recent students
+    │   └── SubmissionAlert.jsx    <- Bootstrap success/error alert
+    ├── calendar/               <- Academic Calendar module (Practical 6, Tailwind)
+    │   ├── AcademicCalendarPage.jsx <- Page shell with tab navigation
+    │   ├── WeeklyTimetable.jsx     <- CSS Grid timetable (desktop) + stacked (mobile)
+    │   ├── ExamSchedule.jsx        <- Filterable exam table
+    │   └── HolidaysEvents.jsx      <- Holiday/event card grid with category filters
+    ├── library/                <- Library Catalogue module (Practical 7, Vue)
+    │   └── LibraryPage.jsx     <- React wrapper, mounts Vue 3 app
     ├── CoursesPage.jsx         <- Enrolled courses view
     ├── AttendancePage.jsx      <- Attendance records
     ├── AssignmentsPage.jsx     <- Assignment list
     ├── ResultsPage.jsx         <- Academic results
     ├── NoticesPage.jsx         <- Notices board
     ├── TasksPage.jsx           <- JSON task management (Practical 2) ~31KB
-    ├── TailwindDemoPage.jsx    <- Tailwind CSS showcase (Practical 6) ~39KB
-    ├── VueDemoPage.jsx         <- Vue.js directives demo (Practical 7)
     └── ProfilePage.jsx         <- Student profile page
+
+vue-practical/                  <- Vue 3 library app (mounted inside React)
+├── LibraryApp.js               <- Vue component with Composition API
+└── directives/
+    ├── debounce.js             <- v-debounce (search input delay)
+    ├── clickOutside.js         <- v-click-outside (close dropdowns/drawers)
+    ├── focus.js                <- v-focus (autofocus on mount)
+    ├── tooltip.js              <- v-tooltip (availability hints)
+    └── permission.js           <- v-permission (role-based visibility)
 ```
 
 ### Navigation / Routing
@@ -161,12 +176,16 @@ backend/
 ├── routes/
 │   ├── studentRoutes.js       <- /api/students CRUD
 │   ├── taskRoutes.js          <- /api/tasks CRUD
-│   └── databaseRoutes.js      <- /api/database health/info
+│   ├── databaseRoutes.js      <- /api/database health/info
+│   └── libraryRoutes.js       <- /api/library/* book catalogue & requests
 ├── controllers/
 │   ├── studentController.js   <- MySQL CRUD logic
-│   └── taskController.js      <- JSON file-based task logic
+│   ├── taskController.js      <- JSON file-based task logic
+│   └── libraryController.js   <- JSON file-based library logic
 ├── data/
-│   └── demo.json              <- Static demo data file
+│   ├── demo.json              <- Static demo data file
+│   ├── books.json             <- Library book catalogue (15 books)
+│   └── bookRequests.json      <- Book request records
 └── demos/                     <- Standalone Node.js demo scripts (Practicals 1 & 2)
 ```
 
@@ -190,6 +209,10 @@ backend/
 | GET | `/api/students/calculate-grade` | UDF grade calc |
 | POST | `/api/students/demo-drop-table` | Controlled DROP demo |
 | GET | `/api/database` | DB health/info |
+| GET | `/api/library/books` | List books (?search, ?category, ?available) |
+| GET | `/api/library/books/:id` | Get single book |
+| GET | `/api/library/requests` | List book requests |
+| POST | `/api/library/requests` | Create book request |
 
 ---
 
@@ -282,6 +305,9 @@ All mock data is fictional. Exported constants:
 | `mockNotices` | 3 notices (academic, department, event) |
 | `mockActivities` | 4 recent activity log items |
 | `mockCourses` | 5 enrolled courses with credits, faculty, attendance, syllabus % |
+| `mockTimetable` | 18 weekly class slots across Mon–Sat (Academic Calendar) |
+| `mockExamSchedule` | 10 exams: mid-semester + end-semester, multiple departments |
+| `mockHolidays` | 17 holidays, events, and exam breaks for Semester 5 |
 
 ---
 
@@ -296,6 +322,7 @@ Prefix: `campushub:` — defined in `src/lib/storage.js`
 | `TASK_ORDER` | `campushub:taskOrder` | Task list sort order |
 | `TASK_FILTER` | `campushub:taskFilter` | Task filter state |
 | `DISMISSED_BANNER` | `campushub:dismissedBanner` | Banner dismissed flag |
+| `ADMISSION_DRAFT` | `campushub:admissionDraft` | In-progress admission form draft |
 
 ---
 
@@ -307,9 +334,9 @@ Prefix: `campushub:` — defined in `src/lib/storage.js`
 | P2 | JSON task management CRUD | `TasksPage.jsx`, `taskController.js` |
 | P3 | Responsive CSS (vw, media queries, flex/grid) | `index.css`, layout components |
 | P4 | Browser APIs (localStorage, geolocation) | `storage.js`, `LocationWidget.jsx` |
-| P5 | Bootstrap form components | `StudentRegistrationPage.jsx` (Bootstrap isolated here) |
-| P6 | Tailwind CSS showcase | `TailwindDemoPage.jsx` |
-| P7 | Vue.js custom directives | `VueDemoPage.jsx`, `src/vue-practical/` |
+| P5 | Student Admissions (Bootstrap 5) | `pages/admissions/` (Bootstrap isolated here) |
+| P6 | Academic Calendar (Tailwind CSS) | `pages/calendar/` |
+| P7 | Library Catalogue (Vue.js custom directives) | `pages/library/`, `vue-practical/` |
 | P8 | MySQL CRUD integration | `StudentsPage.jsx`, `studentController.js`, `schema.sql` |
 
 ---
@@ -371,6 +398,6 @@ These files are large — read before editing, make minimal targeted changes:
 | File | Size | Notes |
 |---|---|---|
 | `StudentsPage.jsx` | ~44 KB | Full MySQL CRUD UI, Practical 8 |
-| `StudentRegistrationPage.jsx` | ~43 KB | Bootstrap form demo, Practical 5 |
-| `TailwindDemoPage.jsx` | ~39 KB | Tailwind showcase, Practical 6 |
 | `TasksPage.jsx` | ~31 KB | Task management UI, Practical 2 |
+| `vue-practical/LibraryApp.js` | ~12 KB | Vue 3 Library app, Practical 7 |
+| `pages/admissions/AdmissionForm.jsx` | ~13 KB | Bootstrap admission form, Practical 5 |
