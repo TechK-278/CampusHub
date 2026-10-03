@@ -153,8 +153,9 @@ Valid tab IDs:
 ```
 dashboard | students | courses | attendance | assignments |
 results | notices | tasks | student-registration |
-tailwind-demo | vue-demo | profile
+tailwind-demo | vue-demo | user-management | access | profile
 ```
+
 
 To navigate programmatically, call `onNavigate(tabId)` (prop passed to `DashboardPage`).
 
@@ -317,6 +318,7 @@ Prefix: `campushub:` — defined in `src/lib/storage.js`
 
 | Constant | localStorage Key | Purpose |
 |---|---|---|
+| `AUTH_TOKEN` | `campushub:authToken` | Stateless JWT Bearer token for API authentication |
 | `LAST_VISITED_PAGE` | `campushub:lastVisitedPage` | Restore active tab on reload |
 | `COMPACT_DASHBOARD` | `campushub:compactDashboard` | Dashboard layout preference |
 | `TASK_ORDER` | `campushub:taskOrder` | Task list sort order |
@@ -338,6 +340,8 @@ Prefix: `campushub:` — defined in `src/lib/storage.js`
 | P6 | Academic Calendar (Tailwind CSS) | `pages/calendar/` |
 | P7 | Library Catalogue (Vue.js custom directives) | `pages/library/`, `vue-practical/` |
 | P8 | MySQL CRUD integration | `StudentsPage.jsx`, `studentController.js`, `schema.sql` |
+| P9 | Role-Based Authentication & Access Control (RBAC) | `middleware/auth.js`, `AuthContext.jsx`, `LoginPage.jsx` |
+
 
 ---
 

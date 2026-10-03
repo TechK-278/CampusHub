@@ -1,7 +1,10 @@
 /**
  * CampusHub — Student & MySQL REST API Client
  * Practical 8: Node.js + MySQL Integration
+ * Practical 9: Authenticated Bearer Client
  */
+
+import { apiClient } from "./apiClient";
 
 const BASE_URL = "/api/students";
 const DB_HEALTH_URL = "/api/database/health";
@@ -12,7 +15,7 @@ export const studentService = {
    */
   async getDatabaseHealth() {
     try {
-      const res = await fetch(DB_HEALTH_URL);
+      const res = await apiClient(DB_HEALTH_URL);
       const data = await res.json();
       return { ok: res.ok, data };
     } catch (err) {
@@ -33,7 +36,7 @@ export const studentService = {
     }
 
     const url = query.toString() ? `${BASE_URL}?${query.toString()}` : BASE_URL;
-    const res = await fetch(url);
+    const res = await apiClient(url);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to fetch student records from MySQL");
     return data;
@@ -43,7 +46,7 @@ export const studentService = {
    * Fetch distinct academic departments (SELECT DISTINCT)
    */
   async getDistinctDepartments() {
-    const res = await fetch(`${BASE_URL}/departments`);
+    const res = await apiClient(`${BASE_URL}/departments`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to fetch distinct departments");
     return data.departments || [];
@@ -53,9 +56,8 @@ export const studentService = {
    * Insert new student record
    */
   async createStudent(studentData) {
-    const res = await fetch(BASE_URL, {
+    const res = await apiClient(BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(studentData)
     });
     const data = await res.json();
@@ -67,9 +69,8 @@ export const studentService = {
    * Update student record
    */
   async updateStudent(id, studentData) {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await apiClient(`${BASE_URL}/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(studentData)
     });
     const data = await res.json();
@@ -81,7 +82,7 @@ export const studentService = {
    * Delete student record
    */
   async deleteStudent(id) {
-    const res = await fetch(`${BASE_URL}/${id}`, {
+    const res = await apiClient(`${BASE_URL}/${id}`, {
       method: "DELETE"
     });
     const data = await res.json();
@@ -93,7 +94,7 @@ export const studentService = {
    * Execute MySQL User-Defined Function calculate_grade(score)
    */
   async calculateGradeWithUDF(score) {
-    const res = await fetch(`${BASE_URL}/calculate-grade?score=${score}`);
+    const res = await apiClient(`${BASE_URL}/calculate-grade?score=${score}`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Failed to execute MySQL User-Defined Function");
     return data;
@@ -103,9 +104,8 @@ export const studentService = {
    * Execute safe DROP TABLE demonstration
    */
   async executeDropTableDemo() {
-    const res = await fetch(`${BASE_URL}/demo-drop-table`, {
+    const res = await apiClient(`${BASE_URL}/demo-drop-table`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ confirmDrop: true })
     });
     const data = await res.json();
@@ -113,3 +113,4 @@ export const studentService = {
     return data;
   }
 };
+

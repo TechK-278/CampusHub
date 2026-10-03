@@ -12,6 +12,9 @@
     "demo:json": "node backend/demos/jsonObjectDemo.js",
     "demo:read-json": "node backend/demos/readJsonDemo.js",
     "demo:multi-json": "node backend/demos/multiJsonDemo.js",
+    "db:init": "node backend/database/initDb.js",
+    "db:seed-users": "node backend/database/seedUsers.js",
+    "test:auth": "node backend/tests/auth.test.js",
     "install:all": "npm --prefix backend install && npm --prefix frontend install"
   },
   "keywords": [

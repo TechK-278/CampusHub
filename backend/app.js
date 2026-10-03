@@ -35,21 +35,32 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Task Management Routes (Phase 2)
+// Authentication & RBAC Routes (Practical 9)
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+const protectedRoutes = require("./routes/protectedRoutes");
+app.use("/api/protected", protectedRoutes);
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
+
+// Task Management Routes (Phase 2 & Practical 9 auth)
 const taskRoutes = require("./routes/taskRoutes");
 app.use("/api/tasks", taskRoutes);
 
-// MySQL Student Management Routes (Practical 8)
+// MySQL Student Management Routes (Practical 8 & Practical 9 RBAC)
 const studentRoutes = require("./routes/studentRoutes");
 app.use("/api/students", studentRoutes);
 
-// MySQL Database Health Routes (Practical 8)
+// MySQL Database Health Routes (Practical 8 & Practical 9 Admin RBAC)
 const databaseRoutes = require("./routes/databaseRoutes");
 app.use("/api/database", databaseRoutes);
 
 // Library Catalogue Routes (Practical 7)
 const libraryRoutes = require("./routes/libraryRoutes");
 app.use("/api/library", libraryRoutes);
+
 
 // Optional Read-only Demo Data Endpoint
 app.get("/api/demo-data", (req, res) => {

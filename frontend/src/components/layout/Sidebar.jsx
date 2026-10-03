@@ -12,9 +12,12 @@ import {
   CalendarDays,
   BookMarked,
   Users,
-  GraduationCap
+  ShieldCheck,
+  UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { isTabAllowed } from "@/lib/permissions";
 
 export const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -28,10 +31,17 @@ export const navigationItems = [
   { id: "student-registration", label: "Admissions", icon: ClipboardList },
   { id: "tailwind-demo", label: "Academic Calendar", icon: CalendarDays },
   { id: "vue-demo", label: "Library", icon: BookMarked },
+  { id: "user-management", label: "User Management", icon: UserCheck },
+  { id: "access", label: "My Access", icon: ShieldCheck },
   { id: "profile", label: "Profile", icon: UserCircle },
 ];
 
 export function Sidebar({ activeTab, onSelectTab, isMobile, onCloseMobile }) {
+  const { user } = useAuth();
+  const userRole = user?.role || "student";
+
+  const visibleItems = navigationItems.filter((item) => isTabAllowed(item.id, userRole));
+
   return (
     <aside className={cn(
       "flex flex-col border-r border-slate-200 bg-white select-none",
@@ -57,7 +67,7 @@ export function Sidebar({ activeTab, onSelectTab, isMobile, onCloseMobile }) {
         <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
           Academic Modules
         </div>
-        {navigationItems.map((item) => {
+        {visibleItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
@@ -95,3 +105,4 @@ export function Sidebar({ activeTab, onSelectTab, isMobile, onCloseMobile }) {
     </aside>
   );
 }
+

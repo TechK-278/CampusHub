@@ -1,7 +1,10 @@
 /**
  * CampusHub — Task API Service
  * Phase 2: Frontend Client Service for Task Operations
+ * Practical 9: Authenticated Bearer Client
  */
+
+import { apiClient } from "./apiClient";
 
 const API_BASE_URL = "/api/tasks";
 
@@ -9,7 +12,7 @@ const API_BASE_URL = "/api/tasks";
  * Fetch all academic tasks from backend JSON storage
  */
 export async function getTasks() {
-  const response = await fetch(API_BASE_URL);
+  const response = await apiClient(API_BASE_URL);
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || `Failed to fetch tasks (HTTP ${response.status})`);
@@ -22,7 +25,7 @@ export async function getTasks() {
  * Fetch a single task by ID
  */
 export async function getTaskById(id) {
-  const response = await fetch(`${API_BASE_URL}/${id}`);
+  const response = await apiClient(`${API_BASE_URL}/${id}`);
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || `Failed to fetch task ${id}`);
@@ -36,11 +39,8 @@ export async function getTaskById(id) {
  * @param {Object} taskData - { title, description, course, dueDate }
  */
 export async function createTask(taskData) {
-  const response = await fetch(API_BASE_URL, {
+  const response = await apiClient(API_BASE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(taskData),
   });
 
@@ -59,11 +59,8 @@ export async function createTask(taskData) {
  * @param {Object} updates - { completed, title, description, course, dueDate }
  */
 export async function updateTask(id, updates) {
-  const response = await fetch(`${API_BASE_URL}/${id}`, {
+  const response = await apiClient(`${API_BASE_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(updates),
   });
 
@@ -81,7 +78,7 @@ export async function updateTask(id, updates) {
  * @param {number} id - Task ID
  */
 export async function deleteTask(id) {
-  const response = await fetch(`${API_BASE_URL}/${id}`, {
+  const response = await apiClient(`${API_BASE_URL}/${id}`, {
     method: "DELETE",
   });
 
@@ -93,3 +90,4 @@ export async function deleteTask(id) {
   const data = await response.json();
   return data.deletedTask;
 }
+

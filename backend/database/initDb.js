@@ -97,14 +97,35 @@ async function initDatabase() {
     `;
     await dbConn.query(seedSql);
 
-    // 6. Verify Table Data & Function
+    // 6. Create Users Table (Practical 9: RBAC)
+    console.log("[6] Executing: CREATE TABLE IF NOT EXISTS users...");
+    const createUsersTableSql = `
+      CREATE TABLE IF NOT EXISTS users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        role ENUM('student', 'faculty', 'admin') NOT NULL DEFAULT 'student',
+        full_name VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      );
+    `;
+    await dbConn.query(createUsersTableSql);
+
+    // 7. Verify Table Data & Function
     const [students] = await dbConn.query("SELECT id, roll_number, first_name, last_name, department FROM students");
-    console.log(`[6] Verification: ${students.length} student records found in MySQL.`);
+    console.log(`[7] Verification: ${students.length} student records found in MySQL.`);
 
     const [testGrade] = await dbConn.query("SELECT calculate_grade(92) AS test_grade");
-    console.log(`[7] Verification: MySQL UDF calculate_grade(92) = "${testGrade[0].test_grade}"`);
+    console.log(`[8] Verification: MySQL UDF calculate_grade(92) = "${testGrade[0].test_grade}"`);
 
     await dbConn.end();
+
+    // 8. Seed RBAC Users
+    const { seedUsers } = require("./seedUsers");
+    await seedUsers();
+
     console.log("==================================================");
     console.log(" MySQL Database Initialization Completed Successfully.");
     console.log("==================================================");
@@ -119,3 +140,4 @@ if (require.main === module) {
 }
 
 module.exports = { initDatabase };
+

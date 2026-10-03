@@ -9,12 +9,17 @@
     "start": "node app.js",
     "dev": "node --watch app.js",
     "demo:hello": "node demos/helloWorld.js",
-    "demo:json": "node demos/jsonObjectDemo.js"
+    "demo:json": "node demos/jsonObjectDemo.js",
+    "db:init": "node database/initDb.js",
+    "db:seed-users": "node database/seedUsers.js",
+    "test:auth": "node tests/auth.test.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^18.0.3",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.4"
   }
 }

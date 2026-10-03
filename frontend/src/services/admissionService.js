@@ -1,9 +1,12 @@
 /**
  * CampusHub — Admission Service
  * Practical 5: Bootstrap Admission Module
+ * Practical 9: Authenticated Bearer Client
  *
  * Wraps existing /api/students endpoints for the admission workflow.
  */
+
+import { apiClient } from "./apiClient";
 
 const BASE_URL = "/api/students";
 
@@ -24,9 +27,8 @@ export const admissionService = {
       division: formData.division,
     };
 
-    const res = await fetch(BASE_URL, {
+    const res = await apiClient(BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
@@ -46,7 +48,7 @@ export const admissionService = {
    * Fetch recent enrollments, newest first
    */
   async getRecentEnrollments() {
-    const res = await fetch(BASE_URL);
+    const res = await apiClient(BASE_URL);
     const data = await res.json();
 
     if (!res.ok) {
@@ -60,3 +62,4 @@ export const admissionService = {
       : [];
   },
 };
+

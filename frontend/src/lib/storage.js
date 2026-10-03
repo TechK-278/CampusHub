@@ -8,6 +8,7 @@
 const STORAGE_PREFIX = "campushub:";
 
 export const STORAGE_KEYS = {
+  AUTH_TOKEN: `${STORAGE_PREFIX}authToken`,
   LAST_VISITED_PAGE: `${STORAGE_PREFIX}lastVisitedPage`,
   COMPACT_DASHBOARD: `${STORAGE_PREFIX}compactDashboard`,
   TASK_ORDER: `${STORAGE_PREFIX}taskOrder`,

@@ -4,28 +4,30 @@
 
 ---
 
-## Current Status: Phase 8 (Node.js + MySQL Relational Database Layer)
+## Current Status: Phase 9 (Role-Based Authentication & Access Control)
 
-Phase 8 introduces MySQL as the primary relational database layer for CampusHub:
-1. **Database & Table Creation:** `campushub` database and `students` table with primary key, auto-increment, and unique constraints.
-2. **SQL Operations:** Direct parameterized `INSERT`, `SELECT`, `SELECT DISTINCT` (unique departments), `UPDATE`, and `DELETE`.
-3. **Database Stored Function (UDF):** Stored MySQL function `calculate_grade(score)` executed via `SELECT calculate_grade(?) AS grade`.
-4. **Demonstrations & Safety:** Controlled `DROP TABLE` educational demonstration with strict confirmation safeguards.
-5. **Connection Pooling:** `mysql2/promise` connection pool configured via environment variables (`.env`).
-6. **Student Management UI:** Full-featured React/Tailwind/shadcn academic student registry with real-time MySQL health monitoring.
+Phase 9 introduces full-stack Role-Based Authentication & Access Control (RBAC):
+1. **User Storage:** MySQL `users` table with username/email uniqueness and role enumeration (`student`, `faculty`, `admin`).
+2. **Password Security:** Salted one-way hashing using `bcryptjs` (cost: 10) — zero plaintext storage.
+3. **Stateless JWT:** Bearer authentication with HS256 tokens and configurable expiration (`2h`).
+4. **Authoritative Middleware:** `authenticateToken` validates tokens and live database roles; `authorizeRoles` enforces strict 401 vs 403 HTTP semantics.
+5. **Rate Limiting:** In-memory login throttle mitigating brute-force attacks (5 failed attempts per 15 minutes -> 429).
+6. **Frontend RBAC:** React `AuthContext`, Bearer `apiClient`, `LoginPage`, `ProtectedTab` guards, role-filtered navigation, `UserManagementPage` (admin only), and `MyAccessPage`.
 
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend:** React 18, Vite 6, JavaScript, Tailwind CSS 3.4, Lucide React, shadcn/ui design patterns
+- **Authentication & Security:** JSON Web Tokens (JWT), `bcryptjs`, Bearer Authorization
 - **Vue.js Module (Isolated):** Vue 3.5 (Mounted into React container for Practical 7 custom directives)
 - **Bootstrap Module (Isolated):** Bootstrap 5.3 (CDN + Local npm package for Practical 5 isolation)
 - **Browser APIs:** Geolocation (`navigator.geolocation`), Local Storage (`localStorage`), Native HTML5 Drag and Drop (`draggable`, `dragstart`, `dragover`, `drop`, `dragend`)
-- **Backend:** Node.js (v24.x), Express.js 4, CORS, dotenv
-- **Relational Database (Phase 8):** MySQL 8.x via `mysql2/promise` connection pool
+- **Backend:** Node.js (v24.x), Express.js 4, CORS, dotenv, `jsonwebtoken`, `bcryptjs`
+- **Relational Database (Phases 8-9):** MySQL 8.x (`campushub.students` & `campushub.users`) via `mysql2/promise` connection pool
 - **Storage Layer (Phases 1-7):** File-based JSON (`backend/data/tasks.json` & `backend/data/demo.json`)
 - **Data Interchange:** JSON (JavaScript Object Notation)
+
 
 ---
 
@@ -151,31 +153,48 @@ npm run dev:frontend
 
 ---
 
+## 📋 Authentication & RBAC REST API Reference
+
+| Method | Endpoint | Description | Access Control |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Authenticate user with username & password, returns JWT | Public |
+| `GET` | `/api/auth/me` | Fetch active user session from live database | Authenticated (Any Role) |
+| `POST` | `/api/auth/logout` | Terminate session (stateless token discard) | Authenticated (Any Role) |
+| `GET` | `/api/protected/profile` | Test profile resource authorization | Authenticated (Any Role) |
+| `GET` | `/api/protected/academic` | Test academic management authorization | Faculty & Admin |
+| `GET` | `/api/protected/admin` | Test system administrator console authorization | Admin Only |
+| `GET` | `/api/users` | List all user accounts with search/role filters | Admin Only |
+| `POST` | `/api/users` | Provision new user account with hashed password | Admin Only |
+| `PUT` | `/api/users/:id` | Update user role and full name | Admin Only |
+| `DELETE` | `/api/users/:id` | Delete user account (self/last admin protected) | Admin Only |
+
+---
+
 ## 📋 Student (MySQL) REST API Reference
 
-| Method | Endpoint | Description | Query / Body Params |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/students` | Get all students (with optional `department` / `search` filters) | `?department=...&search=...` |
-| `GET` | `/api/students/:id` | Get single student record by primary key ID | None |
-| `GET` | `/api/students/departments` | Get unique departments (`SELECT DISTINCT department`) | None |
-| `GET` | `/api/students/:id/grade` | Call MySQL Stored Function `calculate_grade(?)` | `?score=88` |
-| `POST` | `/api/students` | Insert student with validation | `{ roll_number, first_name, last_name, email, mobile, department, semester, division }` |
-| `PUT` | `/api/students/:id` | Update existing student record | `{ roll_number, first_name, last_name, email, mobile, department, semester, division }` |
-| `DELETE` | `/api/students/:id` | Delete student record | None |
-| `POST` | `/api/students/demo-drop-table` | Educational DROP TABLE demonstration (safe demo) | `{ confirm_token: "CONFIRM_DROP_DEMO_TABLE" }` |
-| `GET` | `/api/database/health` | MySQL connection pool health check | None |
+| Method | Endpoint | Description | Query / Body Params | Access Control |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/students` | Get all students (with optional `department` / `search` filters) | `?department=...&search=...` | Faculty & Admin |
+| `GET` | `/api/students/:id` | Get single student record by primary key ID | None | Faculty & Admin |
+| `GET` | `/api/students/departments` | Get unique departments (`SELECT DISTINCT department`) | None | Faculty & Admin |
+| `GET` | `/api/students/:id/grade` | Call MySQL Stored Function `calculate_grade(?)` | `?score=88` | Faculty & Admin |
+| `POST` | `/api/students` | Insert student with validation | `{ roll_number, first_name, ... }` | Faculty & Admin |
+| `PUT` | `/api/students/:id` | Update existing student record | `{ roll_number, first_name, ... }` | Faculty & Admin |
+| `DELETE` | `/api/students/:id` | Delete student record | None | Admin Only |
+| `POST` | `/api/students/demo-drop-table` | Educational DROP TABLE demonstration (safe demo) | `{ confirm_token: "..." }` | Admin Only (Dev) |
+| `GET` | `/api/database/health` | MySQL connection pool health check | None | Admin Only |
 
 ---
 
 ## 📋 Task (JSON) REST API Reference
 
-| Method | Endpoint | Description | Request Body |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/tasks` | Get all academic tasks from `tasks.json` | None |
-| `GET` | `/api/tasks/:id` | Get single task by ID | None |
-| `POST` | `/api/tasks` | Create task with validation | `{ title, course, dueDate, description }` |
-| `PUT` | `/api/tasks/:id` | Update completion status / fields | `{ completed, title, course, dueDate, description }` |
-| `DELETE` | `/api/tasks/:id` | Delete task from `tasks.json` | None |
+| Method | Endpoint | Description | Request Body | Access Control |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/tasks` | Get all academic tasks from `tasks.json` | None | Authenticated (Any Role) |
+| `GET` | `/api/tasks/:id` | Get single task by ID | None | Authenticated (Any Role) |
+| `POST` | `/api/tasks` | Create task with validation | `{ title, course, dueDate, description }` | Authenticated (Any Role) |
+| `PUT` | `/api/tasks/:id` | Update completion status / fields | `{ completed, title, course, ... }` | Authenticated (Any Role) |
+| `DELETE` | `/api/tasks/:id` | Delete task from `tasks.json` | None | Authenticated (Any Role) |
 
 ---
 
@@ -198,12 +217,12 @@ npm run dev:frontend
 | **Practical 4 (I)** | `frontend/src/components/dashboard/LocationWidget.jsx` | Geolocation API (`navigator.geolocation`) verification | Completed |
 | **Practical 4 (II)**| `frontend/src/lib/storage.js` | Browser Local Storage preference management | Completed |
 | **Practical 4 (III)**| `frontend/src/pages/TasksPage.jsx` | Native HTML5 Drag & Drop task card reordering | Completed |
-| **Practical 5 (I)** | `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Online CDN integration & component demo | Completed |
-| **Practical 5 (II)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Offline/Local package bundling (`bootstrap@5.3.8`) | Completed |
-| **Practical 5 (III)**| `frontend/src/pages/StudentRegistrationPage.jsx` | Bootstrap 5 Student Registration form with validation & summary | Completed |
-| **Practical 6** | `frontend/src/pages/TailwindDemoPage.jsx` | Tailwind CSS utility-first tokens, responsive grid, flexbox, states & components | Completed |
-| **Practical 7** | `frontend/src/pages/VueDemoPage.jsx` | Vue.js custom directives (uppercase on click, human date) & dynamic course list | Completed |
+| **Practical 5 (I)** | `frontend/src/pages/admissions/` | Bootstrap 5 Student Admissions module (online CDN & local bundling) | Completed |
+| **Practical 5 (II)**| `frontend/src/pages/admissions/` | Multi-step admission form with draft persistence & summary review | Completed |
+| **Practical 6** | `frontend/src/pages/calendar/` | Academic Calendar module with weekly timetable, exam schedule, holidays | Completed |
+| **Practical 7** | `frontend/src/pages/library/` | Library Catalogue with Vue 3 custom directives (debounce, clickOutside, focus) | Completed |
 | **Practical 8** | `backend/database/`, `frontend/src/pages/StudentsPage.jsx` | Node.js + MySQL CRUD, SELECT DISTINCT, DROP TABLE demo, UDF (`calculate_grade`) | Completed |
+| **Practical 9** | `backend/middleware/auth.js`, `frontend/src/context/AuthContext.jsx` | Role-Based Authentication & Access Control (JWT, bcrypt, users table, RBAC) | Completed |
 
 ---
 
@@ -211,4 +230,5 @@ npm run dev:frontend
 - Complies strictly with the **38 Global AI Rules & Restrictions** in [`AGENTS.md`](./AGENTS.md).
 - Restrained academic color palette (Navy/Slate, no neon/gradients).
 - 100% fictional demo data (no real student PII or credentials).
-- Strictly Phase 8 scoped (MySQL relational database integration).
+- Strictly Phase 9 scoped (Role-Based Authentication & Access Control).
+

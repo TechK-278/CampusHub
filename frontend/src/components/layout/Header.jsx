@@ -26,8 +26,10 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { resetCampusHubPreferences, getStorageItem, setStorageItem, STORAGE_KEYS } from "@/lib/storage";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header({ student, onToggleMobileMenu, onSelectTab }) {
+  const { user, logout } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -58,6 +60,7 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
 
   // Keyboard shortcut (⌘K or Ctrl+K) to focus search
   useEffect(() => {
@@ -123,12 +126,11 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
     setTimeout(() => setPreferencesFeedback(""), 3000);
   };
 
-  const handleSignOutConfirm = () => {
+  const handleSignOutConfirm = async () => {
     setShowSignOutModal(false);
-    onSelectTab?.("dashboard");
-    // Soft session reload to reset portal view
-    window.location.reload();
+    await logout();
   };
+
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-3 sm:px-6 backdrop-blur">
@@ -293,17 +295,27 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
                   setShowNotifications(false);
                 }}
                 className="flex items-center gap-1.5 sm:gap-2.5 rounded-lg p-1 hover:bg-slate-100 transition-colors focus:outline-none"
-                aria-label="Student Profile Menu"
+                aria-label="User Profile Menu"
               >
                 <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border border-slate-300 shrink-0">
-                  <AvatarFallback className="text-[11px]">{student.initials}</AvatarFallback>
+                  <AvatarFallback className="text-[11px] font-bold bg-blue-50 text-blue-700">
+                    {user?.full_name
+                      ? user.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+                      : "U"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block text-left">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-semibold text-slate-900">{student.name}</span>
-                    <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">Sem {student.semester}</Badge>
+                    <span className="text-xs font-semibold text-slate-900 truncate max-w-[120px]">
+                      {user?.full_name || student.name}
+                    </span>
+                    <Badge variant="secondary" className="px-1.5 py-0 text-[10px] capitalize">
+                      {user?.role || "student"}
+                    </Badge>
                   </div>
-                  <span className="text-[11px] text-slate-500 block leading-tight">{student.rollNo}</span>
+                  <span className="text-[11px] text-slate-500 block leading-tight font-mono">
+                    {user?.username || student.rollNo}
+                  </span>
                 </div>
                 <ChevronDown className="hidden md:block h-3.5 w-3.5 text-slate-400" />
               </button>
@@ -311,11 +323,11 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
               {showProfileMenu && (
                 <div className="absolute right-0 mt-2 w-56 sm:w-60 rounded-lg border border-slate-200 bg-white p-2 shadow-lg z-50 text-left">
                   <div className="border-b border-slate-100 p-2 pb-3">
-                    <p className="text-xs font-semibold text-slate-900">{student.name}</p>
-                    <p className="text-[11px] text-slate-500 truncate">{student.email}</p>
+                    <p className="text-xs font-semibold text-slate-900">{user?.full_name || student.name}</p>
+                    <p className="text-[11px] text-slate-500 truncate">{user?.email || student.email}</p>
                     <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-600">
                       <ShieldCheck className="h-3.5 w-3.5" />
-                      <span>Student Portal (Verified)</span>
+                      <span className="capitalize">{user?.role || "student"} Portal (Active)</span>
                     </div>
                   </div>
                   <div className="py-1 space-y-0.5">
@@ -330,12 +342,32 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
                     </button>
                     <button 
                       onClick={() => {
+                        onSelectTab?.("access");
+                        setShowProfileMenu(false);
+                      }}
+                      className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                    >
+                      <ShieldCheck className="h-3.5 w-3.5 text-slate-500" /> My Access & Security
+                    </button>
+                    {user?.role === "admin" && (
+                      <button 
+                        onClick={() => {
+                          onSelectTab?.("user-management");
+                          setShowProfileMenu(false);
+                        }}
+                        className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Settings className="h-3.5 w-3.5 text-slate-500" /> User Management
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => {
                         setShowProfileMenu(false);
                         setShowPreferencesModal(true);
                       }}
                       className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                     >
-                      <Settings className="h-3.5 w-3.5 text-slate-500" /> Portal Preferences
+                      <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" /> Portal Preferences
                     </button>
                   </div>
                   <div className="border-t border-slate-100 pt-1 mt-1">
@@ -353,6 +385,7 @@ export function Header({ student, onToggleMobileMenu, onSelectTab }) {
               )}
             </div>
           </div>
+
         </>
       )}
 

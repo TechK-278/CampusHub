@@ -31,6 +31,7 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { studentService } from "@/services/studentService";
+import { useAuth } from "@/context/AuthContext";
 
 const INITIAL_FORM = {
   roll_number: "",
@@ -44,8 +45,13 @@ const INITIAL_FORM = {
 };
 
 export function StudentsPage() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+  const canModify = user?.role === "faculty" || user?.role === "admin";
+
   const [activeTab, setActiveTab] = useState("directory"); // "directory", "evaluation", "departments"
   const [students, setStudents] = useState([]);
+
   const [departments, setDepartments] = useState([]);
   const [selectedDept, setSelectedDept] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -341,14 +347,16 @@ export function StudentsPage() {
                   Manage and view all registered student records.
                 </CardDescription>
               </div>
-              <Button
-                onClick={handleOpenAdd}
-                size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center gap-1.5 self-start sm:self-auto shadow-2xs"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>Add Student</span>
-              </Button>
+              {canModify && (
+                <Button
+                  onClick={handleOpenAdd}
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs flex items-center gap-1.5 self-start sm:self-auto shadow-2xs"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Student</span>
+                </Button>
+              )}
             </div>
           </CardHeader>
 
@@ -462,22 +470,33 @@ export function StudentsPage() {
                           {student.mobile}
                         </td>
                         <td className="py-2.5 px-3 text-right space-x-1 whitespace-nowrap">
-                          <button
-                            type="button"
-                            onClick={() => handleOpenEdit(student)}
-                            className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
-                            title="Edit Student"
-                          >
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleOpenDelete(student)}
-                            className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
-                            title="Delete Student"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
+                          {canModify && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEdit(student)}
+                              className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-blue-600 transition-colors"
+                              title="Edit Student"
+                            >
+                              <Edit2 className="h-3.5 w-3.5" />
+                            </button>
+                          )}
+                          {isAdmin ? (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenDelete(student)}
+                              className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                              title="Delete Student"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          ) : (
+                            <span 
+                              className="inline-block p-1 text-slate-300 cursor-not-allowed" 
+                              title="Admin authorization required to delete student records"
+                            >
+                              <Trash2 className="h-3.5 w-3.5 opacity-40" />
+                            </span>
+                          )}
                         </td>
                       </tr>
                     ))
